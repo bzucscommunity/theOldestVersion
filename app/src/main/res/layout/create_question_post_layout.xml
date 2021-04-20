@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/subjectsSpinner"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_toolbar"
+
+        layout="@layout/top_toolbar_layout"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+        app:layout_constraintEnd_toEndOf="@+id/bottom_nav"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_toolbar"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="145dp"
+            android:layout_marginLeft="145dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="144dp"
+            android:layout_marginRight="144dp"
+            android:layout_marginBottom="74dp"
+            android:text="Create Question Post"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/post_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/post_subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="40dp"
+            android:text="Subject Name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post" />
+
+        <TextView
+            android:id="@+id/subjectNameValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/post_subject"
+            app:layout_constraintStart_toEndOf="@+id/post_subject"
+            app:layout_constraintTop_toTopOf="@+id/post_subject" />
+
+        <EditText
+            android:id="@+id/post_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
+            android:hint="Title"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_subject" />
+
+        <EditText
+            android:id="@+id/post_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
+            android:hint="Tags"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_title" />
+
+        <EditText
+            android:id="@+id/post_body"
+            android:layout_width="374dp"
+            android:layout_height="127dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="What's On Your Mind?"
+            android:inputType="textMultiLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_tags" />
+
+        <Button
+            android:id="@+id/post_attachment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_baseline_attach_file_24"
+            android:padding="16dp"
+            android:text="Attach a File"
+            android:textColor="#050505"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_body"
+            app:strokeWidth="5dp" />
+
+        <TextView
+            android:id="@+id/filePath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            app:layout_constraintBottom_toBottomOf="@+id/post_attachment"
+            app:layout_constraintStart_toEndOf="@+id/post_attachment"
+            app:layout_constraintTop_toTopOf="@+id/post_attachment" />
+
+        <Button
+            android:id="@+id/post_submit"
+            android:layout_width="400dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="30dp"
+            android:text="Post"
+            android:textSize="18sp"
+            app:backgroundTint="#396FB5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_attachment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/bottom_nav"
+
+        layout="@layout/bottom_nav_layout"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

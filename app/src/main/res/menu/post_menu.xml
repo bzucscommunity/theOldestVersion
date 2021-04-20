@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/add_favorites"
+        android:title="Add to Favorites" />
+    <item
+        android:id="@+id/followed"
+        android:drawableLeft="@drawable/ic_baseline_notifications_off_24"
+        android:title="Turn On Notifications" />
+    <item
+        android:id="@+id/share_post"
+        android:title="Share" />
+</menu>

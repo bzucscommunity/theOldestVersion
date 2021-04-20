@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CS Comunity</string>
+    <string-array name="PostType">
+        <item>Topic</item>
+        <item>Question</item>
+
+
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+
+</resources>

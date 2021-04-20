@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="project.bzu.csc">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Csc"
+        android:usesCleartextTraffic="true"
+        android:label="@string/app_name"
+
+        >
+
+        <activity android:name=".Activities.CreatePostFromHome"/>
+        <activity android:name=".Activities.CreateQuestionPost"/>
+        <activity android:name=".Activities.CreateTopicPost"/>
+        <activity android:name=".Activities.Home">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.MoreMenu"/>
+        <activity android:name=".Activities.Notification"/>
+        <activity android:name=".Activities.Question"/>
+        <activity android:name=".Activities.QuestionCardView"/>
+        <activity android:name=".Activities.Topic"/>
+        <activity android:name=".Activities.TopicCardView"/>
+        <activity android:name=".Activities.ViewPostInHome"/>
+        <activity android:name=".Activities.ViewQuestionPost"/>
+        <activity android:name=".Activities.ViewTopicPost"/>
+
+    </application>
+</manifest>
