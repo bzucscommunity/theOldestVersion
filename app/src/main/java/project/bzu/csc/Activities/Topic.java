@@ -39,9 +39,9 @@ public class Topic extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recycler_view_layout);
+        setContentView(R.layout.recycler_view_topic_layout);
 
-        recyclerView = findViewById(R.id.subjectsList2);
+        recyclerView = findViewById(R.id.topicSubjectsList);
         subjects=new ArrayList<>();
         extractSubject();
 

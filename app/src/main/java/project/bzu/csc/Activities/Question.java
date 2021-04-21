@@ -44,9 +44,9 @@ public class Question extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         context=this;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recycler_view_layout);
+        setContentView(R.layout.recycler_view_question_layout);
 
-        recyclerView = findViewById(R.id.subjectsList2);
+        recyclerView = findViewById(R.id.questionSubjectsList);
         subjects = new ArrayList<>();
         extractSubject();
 
