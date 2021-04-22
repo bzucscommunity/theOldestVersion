@@ -68,7 +68,7 @@
                 android:text="Time Posted"
                 app:layout_constraintStart_toEndOf="@+id/userImage"
                 app:layout_constraintTop_toBottomOf="@+id/userName"
-                app:menu="@menu/post_menu" />
+                 />
 
             <ImageView
                 android:id="@+id/post_more_menu"
@@ -76,7 +76,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_more_horiz_24" />
+                app:srcCompat="@drawable/ic_baseline_more_horiz_24"
+                app:menu="@menu/post_menu"/>
 
             <TextView
                 android:id="@+id/postType"
