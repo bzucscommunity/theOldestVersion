@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,9 +51,12 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import project.bzu.csc.Adapters.GetCommentsAdapter;
+import project.bzu.csc.Models.Comment;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
@@ -60,19 +65,27 @@ import project.bzu.csc.R;
 public class ViewTopicPost extends AppCompatActivity{
     List<Post> posts;
     List<User> users;
-    TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares;
+    List<Comment> comments;
+    TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares,PostClickView;
     ImageView postMoreMenu,image1,image2,image3,image4,image5;
     CircleImageView image;
-
+    EditText commentsText;
+    RecyclerView recyclerView;
+    GetCommentsAdapter adapter;
+    public static Context context;
 
     VideoView video1,video2,video3,video4,video5;
     ConstraintLayout tags,imagesPreviews,videosPreviews;
-
+    int postID;
     User user = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_post_layout);
+
+        Intent intent = getIntent();
+        postID= (int) intent.getExtras().get("postIDFromTopic");
+
         userName=findViewById(R.id.userName);
         postTime=findViewById(R.id.post_time);
         postType=findViewById(R.id.postType);
@@ -99,6 +112,9 @@ public class ViewTopicPost extends AppCompatActivity{
         tags=findViewById(R.id.tags);
         imagesPreviews=findViewById(R.id.images_previews);
         videosPreviews=findViewById(R.id.videos_previews);
+        PostClickView=findViewById(R.id.Postclick);
+        recyclerView=findViewById(R.id.recyclerView);
+        context=this;
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.topic);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -133,8 +149,21 @@ public class ViewTopicPost extends AppCompatActivity{
 
         posts=new ArrayList<>();
         users = new ArrayList<>();
-
+        comments=new ArrayList<>();
         extractPosts();
+        extractComments();
+        PostClickView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    addComment();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(ViewTopicPost.this, "Success", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 //
@@ -251,6 +280,86 @@ public class ViewTopicPost extends AppCompatActivity{
             e.printStackTrace();
         }
         return "";
+    }
+    private void addComment()throws JSONException {
+        Date date =new Date();
+        SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        final String strdate =simple.format(date);
+        String post_url = "http://192.168.1.111:8080/api/postcomment";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        // postSubject = findViewById(R.id.post_subject);
+        commentsText = findViewById(R.id.editcomments);
+
+        JSONObject postData = new JSONObject();
+
+        try {
+
+            //postData.put("userID","1170288");
+            postData.put("postID",postID);
+            postData.put("body", commentsText.getText().toString().trim());
+            postData.put("commentTime",strdate);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("tag", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d("tag", "onErrorResponse:ERROR");
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+
+    }
+    private void extractComments() {
+        RequestQueue queue= Volley.newRequestQueue(this);
+
+        String JSON_URL2="http://192.168.1.111:8080/api/getComments/"+postID;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i=0; i< response.length();i++){
+                    try {
+                        JSONObject commentObject = response.getJSONObject(i);
+                        Comment comment = new  Comment();
+                        String user1=  commentObject.getString("user");
+                        Gson g = new Gson();
+                        User user = g.fromJson(user1, User.class);
+                        comment.setCommentID(commentObject.getInt("commentID"));
+                        comment.setBody(commentObject.getString("body"));
+                        comment.setCommentTime(commentObject.getString("commentTime"));
+                        comment.setUser(user);
+                        comment.setPostID(commentObject.getInt("postID"));
+
+                        comments.add(comment);
+                        Log.d("TAG", "onResponse: "+ comments.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                adapter = new GetCommentsAdapter(getApplicationContext(),comments);
+                recyclerView.setAdapter(adapter);
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: testExtractPosts" + error.getMessage());
+            }
+        });
+        queue.add(jsonArrayRequest);
     }
 
 
