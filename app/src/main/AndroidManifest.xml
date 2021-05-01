@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.MoreMenu"/>
-        <activity android:name=".Activities.Notification"/>
+        <activity android:name=".Activities.Search"/>
         <activity android:name=".Activities.Question"/>
         <activity android:name=".Activities.QuestionCardView"/>
         <activity android:name=".Activities.Topic"/>

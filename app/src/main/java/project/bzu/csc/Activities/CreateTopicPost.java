@@ -78,8 +78,8 @@ public class CreateTopicPost extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Topic.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.notifications:
-                        startActivity(new Intent(getApplicationContext(), Notification.class));
+                    case R.id.search:
+                        startActivity(new Intent(getApplicationContext(), Search.class));
                         overridePendingTransition(0, 0);
                         return true;
 

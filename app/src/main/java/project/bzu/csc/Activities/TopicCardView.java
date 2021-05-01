@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.bzu.csc.Adapters.GetAllPostsAdapter;
 import project.bzu.csc.Adapters.GetTopicPostsAdapter;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
@@ -71,8 +70,8 @@ public class TopicCardView extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Topic.class));
                         overridePendingTransition(0,0);
                         return true;
-                    case R.id.notifications:
-                        startActivity(new Intent(getApplicationContext(), Notification.class));
+                    case R.id.search:
+                        startActivity(new Intent(getApplicationContext(), Search.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.menu:

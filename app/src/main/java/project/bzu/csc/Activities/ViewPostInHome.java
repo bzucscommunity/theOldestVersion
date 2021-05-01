@@ -16,21 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.VideoView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,7 +30,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -51,12 +40,10 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import project.bzu.csc.Adapters.GetAllPostsAdapter;
 import project.bzu.csc.Adapters.GetCommentsAdapter;
 import project.bzu.csc.Models.Comment;
 import project.bzu.csc.Models.Post;
@@ -139,8 +126,8 @@ public class ViewPostInHome extends AppCompatActivity{
                         startActivity(new Intent(getApplicationContext(), Topic.class));
                         overridePendingTransition(0,0);
                         return true;
-                    case R.id.notifications:
-                        startActivity(new Intent(getApplicationContext(), Notification.class));
+                    case R.id.search:
+                        startActivity(new Intent(getApplicationContext(), Search.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.menu:
