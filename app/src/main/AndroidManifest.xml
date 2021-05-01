@@ -23,13 +23,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.MoreMenu"/>
-        <activity android:name=".Activities.Search"/>
         <activity android:name=".Activities.Question"/>
         <activity android:name=".Activities.QuestionCardView"/>
+        <activity android:name=".Activities.Search"/>
+        <activity android:name=".Activities.SearchCardView"/>
         <activity android:name=".Activities.Topic"/>
         <activity android:name=".Activities.TopicCardView"/>
         <activity android:name=".Activities.ViewPostInHome"/>
         <activity android:name=".Activities.ViewQuestionPost"/>
+        <activity android:name=".Activities.ViewSearchPost"/>
         <activity android:name=".Activities.ViewTopicPost"/>
 
     </application>

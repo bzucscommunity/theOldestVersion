@@ -2,6 +2,7 @@ package project.bzu.csc.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import project.bzu.csc.Activities.QuestionCardView;
+import project.bzu.csc.Activities.SearchCardView;
 import project.bzu.csc.Models.Subject;
 import project.bzu.csc.R;
 
@@ -45,18 +47,25 @@ public class GetCategoriesAdapter extends RecyclerView.Adapter<GetCategoriesAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
 
+
+
         holder.subjectName.setText(subjects.get(position).getName());
-        holder.Icon.setVisibility(View.VISIBLE);
+      //  holder.Icon.setVisibility(View.VISIBLE);
         Picasso.get().load(subjects.get(position).getImageURL()).into(holder.subjectImage);
-//        holder.cardView.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                Intent intent = new Intent(context, QuestionCardView.class);
-//                intent.putExtra("subjectNameFromQuestion",subjects.get(position).getName());
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//            }
-//        });
+
+     //   holder.Icon.getDrawable(ic_baseline_keyboard_arrow_right_24);
+//        Drawable drawable=holder.Icon.getDrawable();
+      //  Picasso.get().load().into(holder.Icon);
+       // holder.Icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_baseline_keyboard_arrow_right_24));
+        holder.cardView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(context, SearchCardView.class);
+                intent.putExtra("subjectNameFromSearch",subjects.get(position).getName());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
 
 
 
