@@ -84,7 +84,7 @@ public class Home extends AppCompatActivity {
 
         posts=new ArrayList<>();
         users=new ArrayList<>();
-        extractPosts("http://192.168.1.111:8080/api/get/Time");
+        extractPosts("http://192.168.1.106:8080/api/get/Time");
 
         FloatingActionButton fab_addNewPost = findViewById(R.id.fab_add);
         fab_addNewPost.setOnClickListener(new View.OnClickListener(){

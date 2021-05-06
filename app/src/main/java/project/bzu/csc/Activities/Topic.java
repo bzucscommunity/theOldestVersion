@@ -33,7 +33,7 @@ import project.bzu.csc.R;
 public class Topic extends AppCompatActivity {
     RecyclerView recyclerView;
     List<Subject> subjects;
-    private String JSON_URL="http://192.168.1.111:8080/api/subject";
+    private String JSON_URL="http://192.168.1.106:8080/api/subject";
     GridSubjectsListTopicAdapter adapter;
 
     @Override

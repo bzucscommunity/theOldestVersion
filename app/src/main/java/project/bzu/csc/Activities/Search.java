@@ -46,7 +46,7 @@ public class Search extends AppCompatActivity {
     ImageView icon;
     RecyclerView browseCategories;
     GetCategoriesAdapter adapter;
-    private String JSON_URL="http://192.168.1.111:8080/api/subject";
+    private String JSON_URL="http://192.168.1.106:8080/api/subject";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

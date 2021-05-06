@@ -109,7 +109,7 @@ public class QuestionCardView extends AppCompatActivity {
     }
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.111:8080/api/typeSubject/Question/"+name;
+        String JSON_URL="http://192.168.1.106:8080/api/typeSubject/Question/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override

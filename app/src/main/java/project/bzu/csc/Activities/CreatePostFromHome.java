@@ -110,7 +110,7 @@ public class CreatePostFromHome extends AppCompatActivity {
 
     private void submitPost() throws JSONException {
 
-        String post_url = "http://192.168.1.111:8080/api/post";
+        String post_url = "http://192.168.1.106:8080/api/post";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
         postTitle = findViewById(R.id.post_title);
@@ -156,7 +156,7 @@ public class CreatePostFromHome extends AppCompatActivity {
     }
     private void populateSpinner(){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.1.111:8080/api/subject";
+        String url = "http://192.168.1.106:8080/api/subject";
 
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {

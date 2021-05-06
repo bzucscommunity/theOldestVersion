@@ -36,7 +36,7 @@ public class Question extends AppCompatActivity {
     public static Context context;
     RecyclerView recyclerView;
     List<Subject> subjects;
-    private String JSON_URL="http://192.168.1.111:8080/api/subject";
+    private String JSON_URL="http://192.168.1.106:8080/api/subject";
     GridSubjectsListQuestionAdapter adapter;
 
 

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -82,12 +83,14 @@ public class GetCategoriesAdapter extends RecyclerView.Adapter<GetCategoriesAdap
         ImageView subjectImage,Icon;
         CardView cardView;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subjectName=itemView.findViewById(R.id.categories_title);
             subjectImage=itemView.findViewById(R.id.categories_image);
             Icon=itemView.findViewById(R.id.Icon);
             cardView=itemView.findViewById(R.id.categories_card);
+
 
         }
     }

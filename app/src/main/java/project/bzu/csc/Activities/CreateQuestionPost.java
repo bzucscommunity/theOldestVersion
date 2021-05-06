@@ -137,7 +137,7 @@ public class CreateQuestionPost extends AppCompatActivity {
     }
 
     private void submitPost() {
-        String post_url = "http://192.168.1.111:8080/api/post";
+        String post_url = "http://192.168.1.106:8080/api/post";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
 
