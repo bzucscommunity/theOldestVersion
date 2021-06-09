@@ -2,13 +2,16 @@ package project.bzu.csc.Activities;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,12 +25,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +56,10 @@ public class SearchCardView extends AppCompatActivity {
     String name;
     Dialog dialog;
     String filterBy;
+    ImageView accountImage;
+    SharedPreferences sp;
+    User user;
+    int userID;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +92,7 @@ public class SearchCardView extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.menu:
-                        startActivity(new Intent(getApplicationContext(), MoreMenu.class));
+                        startActivity(new Intent(getApplicationContext(), Favorits.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }
@@ -93,6 +102,10 @@ public class SearchCardView extends AppCompatActivity {
         recyclerView = findViewById(R.id.searchPostsList);
         posts = new ArrayList<>();
         users = new ArrayList<>();
+        accountImage = findViewById(R.id.account);
+        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        userID = sp.getInt("userID" , 0);
+        extractUser();
         Log.d("test", "onCreate: hell0");
 
         FloatingActionButton fab_addNewPost = findViewById(R.id.fab_add);
@@ -108,7 +121,7 @@ public class SearchCardView extends AppCompatActivity {
     }
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.106:8080/api/getPostBySubject/"+name;
+        String JSON_URL="http://192.168.1.109:8080/api/getPostBySubject/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -200,7 +213,7 @@ public class SearchCardView extends AppCompatActivity {
     public void filter(){
         posts.clear();
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.106:8080/api/typeSubject/"+filterBy+"/"+name;
+        String JSON_URL="http://192.168.1.109:8080/api/typeSubject/"+filterBy+"/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -243,8 +256,54 @@ public class SearchCardView extends AppCompatActivity {
         });
         queue.add(jsonArrayRequest);
     }
+    private void extractUser() {
 
+
+        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                    User user=new User();
+
+                    user.setUserID(response.getInt("userID"));
+                    user.setEmail(response.getString("email").toString());
+                    user.setUserType(response.getString("userType").toString());
+                    user.setFirstName(response.getString("firstName").toString());
+                    user.setLastName(response.getString("lastName").toString());
+                    user.setUserPassword(response.getString("userPassword").toString());
+                    user.setUserImage((response.getString("userImage").toString()));
+
+                    Picasso.get().load(user.getUserImage()).into(accountImage);
+                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+                    // Log.d("userName",user.getFirstName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue2.add(jsonObjReq);
+
+
+        ;
     }
+
+
+
+}
 
 
 

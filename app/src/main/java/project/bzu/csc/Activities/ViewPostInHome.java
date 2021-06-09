@@ -3,11 +3,13 @@ package project.bzu.csc.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +43,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetCommentsAdapter;
@@ -58,6 +62,8 @@ public class ViewPostInHome extends AppCompatActivity{
     TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares,PostClickView;
     ImageView postMoreMenu,image1,image2,image3,image4,image5;
     CircleImageView image;
+    ImageButton favorite;
+    Post post;
 
     EditText commentsText;
     RecyclerView recyclerView;
@@ -68,6 +74,9 @@ public class ViewPostInHome extends AppCompatActivity{
     ConstraintLayout tags,imagesPreviews,videosPreviews;
     int postID;
     User user = new User();
+    SharedPreferences sp;
+    int userID;
+    ImageView accountImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +86,15 @@ public class ViewPostInHome extends AppCompatActivity{
         postID= (int) intent.getExtras().get("postID");
         Log.d("TAG", "onCreate: why"+postID);
 
+        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        userID = sp.getInt("userID" , 0);
+
 
         userName=findViewById(R.id.userName);
         postTime=findViewById(R.id.post_time);
         postType=findViewById(R.id.postType);
         postTitle=findViewById(R.id.post_Title);
+        favorite=findViewById(R.id.fav);
         postContent=findViewById(R.id.post_content);
         tag1=findViewById(R.id.tag1);
         tag2=findViewById(R.id.tag2);
@@ -131,7 +144,7 @@ public class ViewPostInHome extends AppCompatActivity{
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.menu:
-                        startActivity(new Intent(getApplicationContext(), MoreMenu.class));
+                        startActivity(new Intent(getApplicationContext(), Favorits.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
@@ -142,6 +155,10 @@ public class ViewPostInHome extends AppCompatActivity{
         posts=new ArrayList<>();
         users = new ArrayList<>();
         comments=new ArrayList<>();
+        accountImage = findViewById(R.id.account);
+        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        userID = sp.getInt("userID" , 0);
+        extractUser();
         extractPosts();
         extractComments();
         PostClickView.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +174,19 @@ public class ViewPostInHome extends AppCompatActivity{
             }
         });
 
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    addToFavorites();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(ViewPostInHome.this, "Added to Favorites", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
 //
     }
@@ -164,7 +194,7 @@ public class ViewPostInHome extends AppCompatActivity{
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
         int postID= (int) intent.getExtras().get("postID");
-        String JSON_URL="http://192.168.1.106:8080/api/getPost/"+postID;
+        String JSON_URL="http://192.168.1.109:8080/api/getPost/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -172,7 +202,8 @@ public class ViewPostInHome extends AppCompatActivity{
                 for (int i=0; i< response.length();i++){
                     try {
                         JSONObject postObject = response.getJSONObject(i);
-                        Post post = new Post();
+                        post = new Post();
+
 
                         post.setPostAttachment(postObject.getString("postAttachment").toString());
                         post.setPostBody(postObject.getString("postBody").toString());
@@ -277,7 +308,7 @@ public class ViewPostInHome extends AppCompatActivity{
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         final String strdate =simple.format(date);
-        String post_url = "http://192.168.1.111:8080/api/postcomment";
+        String post_url = "http://192.168.1.109:8080/api/postcomment";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
         commentsText = findViewById(R.id.editcomments);
@@ -315,7 +346,7 @@ public class ViewPostInHome extends AppCompatActivity{
     private void extractComments() {
         RequestQueue queue= Volley.newRequestQueue(this);
 
-        String JSON_URL2="http://192.168.1.106:8080/api/getComments/"+postID;
+        String JSON_URL2="http://192.168.1.109:8080/api/getComments/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -353,6 +384,86 @@ public class ViewPostInHome extends AppCompatActivity{
         });
         queue.add(jsonArrayRequest);
     }
+    private void addToFavorites() throws JSONException {
+
+        String post_url = "http://192.168.1.109:8080/api/addTofavorites";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject postData = new JSONObject();
+
+
+
+        try {
+            postData.put("userID", userID);
+            postData.put("postID",postID);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("tag", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d("tag", "onErrorResponse:ERROR");
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+
+    }
+    private void extractUser() {
+
+
+        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                    User user=new User();
+
+                    user.setUserID(response.getInt("userID"));
+                    user.setEmail(response.getString("email").toString());
+                    user.setUserType(response.getString("userType").toString());
+                    user.setFirstName(response.getString("firstName").toString());
+                    user.setLastName(response.getString("lastName").toString());
+                    user.setUserPassword(response.getString("userPassword").toString());
+                    user.setUserImage((response.getString("userImage").toString()));
+
+                    Picasso.get().load(user.getUserImage()).into(accountImage);
+                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+                    // Log.d("userName",user.getFirstName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue2.add(jsonObjReq);
+
+
+        ;
+    }
+
 
 
 

@@ -1,6 +1,8 @@
 package project.bzu.csc.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +26,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.Subject;
+import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
 
 
@@ -45,6 +52,11 @@ public class CreatePostFromHome extends AppCompatActivity {
     ArrayList<String> subjectsListSpinner = new ArrayList<>();
     private ArrayAdapter<String> subjectSpinnerAdapter;
     private ArrayAdapter<CharSequence> subjectSpinnerAdapter2;
+    SharedPreferences sp;
+    User user;
+    int userID;
+    ImageView accountImage;
+
 
 
 
@@ -77,7 +89,7 @@ public class CreatePostFromHome extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.menu:
-                        startActivity(new Intent(getApplicationContext(), MoreMenu.class));
+                        startActivity(new Intent(getApplicationContext(), Favorits.class));
                         overridePendingTransition(0, 0);
 
                         return true;
@@ -93,6 +105,12 @@ public class CreatePostFromHome extends AppCompatActivity {
         postTypeSpinner.setAdapter(subjectSpinnerAdapter2);
         textFile = (TextView)findViewById(R.id.filePath);
         submit = (Button) findViewById(R.id.post_submit);
+        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+         userID = sp.getInt("userID" , 0);
+        Log.d("userID", String.valueOf(userID));
+         extractID();
+        accountImage = findViewById(R.id.account);
+        extractUser();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +128,7 @@ public class CreatePostFromHome extends AppCompatActivity {
 
     private void submitPost() throws JSONException {
 
-        String post_url = "http://192.168.1.106:8080/api/post";
+        String post_url = "http://192.168.1.109:8080/api/post";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
         postTitle = findViewById(R.id.post_title);
@@ -133,6 +151,9 @@ public class CreatePostFromHome extends AppCompatActivity {
             postData.put("postBody", postBody.getText().toString().trim());
             postData.put("postAttachment", textFile.getText().toString().trim());
             postData.put("postTime", strdate);
+          //  postData.put("user",user);
+          //  Log.d("user33" , user.toString());
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -156,7 +177,7 @@ public class CreatePostFromHome extends AppCompatActivity {
     }
     private void populateSpinner(){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.1.106:8080/api/subject";
+        String url = "http://192.168.1.109:8080/api/subject";
 
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -185,6 +206,96 @@ public class CreatePostFromHome extends AppCompatActivity {
             }
         });
         queue.add(jsonArrayRequest);
+    }
+
+
+    private void extractID() {
+        RequestQueue queue= Volley.newRequestQueue(this);
+
+        String JSON_URL="http://192.168.1.109:8080/api/" + userID;
+     //   JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_URL, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                    try {
+//                        JSONObject postObject = response.getJSONObject(i);
+//                        String user1=  postObject.getString("user");
+//
+//                        Gson g = new Gson();
+//                         user = g.fromJson(user1, User.class);
+
+                        user=new User();
+
+                    user.setUserID(response.getInt("userID"));
+                    user.setEmail(response.getString("email").toString());
+                    user.setUserType(response.getString("userType").toString());
+                    user.setFirstName(response.getString("firstName").toString());
+                    user.setLastName(response.getString("lastName").toString());
+                    user.setUserPassword(response.getString("userPassword").toString());
+                    user.setUserImage((response.getString("userImage").toString()));
+                        Log.d("Ussser",user.toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue.add(jsonObjReq);
+    }
+
+    private void extractUser() {
+
+
+        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                    User user=new User();
+
+                    user.setUserID(response.getInt("userID"));
+                    user.setEmail(response.getString("email").toString());
+                    user.setUserType(response.getString("userType").toString());
+                    user.setFirstName(response.getString("firstName").toString());
+                    user.setLastName(response.getString("lastName").toString());
+                    user.setUserPassword(response.getString("userPassword").toString());
+                    user.setUserImage((response.getString("userImage").toString()));
+
+                    Picasso.get().load(user.getUserImage()).into(accountImage);
+                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+                    // Log.d("userName",user.getFirstName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue2.add(jsonObjReq);
+
+
+        ;
     }
 
 }

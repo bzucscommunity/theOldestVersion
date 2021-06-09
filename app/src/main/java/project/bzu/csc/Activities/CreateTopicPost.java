@@ -1,6 +1,8 @@
 package project.bzu.csc.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import project.bzu.csc.Adapters.spinnerAdapter;
+import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
 
 public class CreateTopicPost extends AppCompatActivity {
@@ -42,6 +47,10 @@ public class CreateTopicPost extends AppCompatActivity {
     TextView textFile;
     Intent intent;
     String name;
+    ImageView accountImage;
+    SharedPreferences sp;
+    User user;
+    int userID;
     private static final int PICKFILE_RESULT_CODE = 1;
 
 
@@ -84,7 +93,7 @@ public class CreateTopicPost extends AppCompatActivity {
                         return true;
 
                     case R.id.menu:
-                        startActivity(new Intent(getApplicationContext(), MoreMenu.class));
+                        startActivity(new Intent(getApplicationContext(), Favorits.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
@@ -94,6 +103,10 @@ public class CreateTopicPost extends AppCompatActivity {
         subjectNameValue = findViewById(R.id.subjectNameValue);
         Button buttonPick = (Button)findViewById(R.id.post_attachment);
         textFile = (TextView)findViewById(R.id.filePath);
+        accountImage = findViewById(R.id.account);
+        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        userID = sp.getInt("userID" , 0);
+        extractUser();
 
         submit = (Button) findViewById(R.id.post_submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +150,7 @@ public class CreateTopicPost extends AppCompatActivity {
     }
 
     private void submitPost() {
-        String post_url = "http://192.168.1.106:8080/api/post";
+        String post_url = "http://192.168.1.109:8080/api/post";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
 
@@ -182,5 +195,50 @@ public class CreateTopicPost extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
     }
+    private void extractUser() {
+
+
+        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                    User user=new User();
+
+                    user.setUserID(response.getInt("userID"));
+                    user.setEmail(response.getString("email").toString());
+                    user.setUserType(response.getString("userType").toString());
+                    user.setFirstName(response.getString("firstName").toString());
+                    user.setLastName(response.getString("lastName").toString());
+                    user.setUserPassword(response.getString("userPassword").toString());
+                    user.setUserImage((response.getString("userImage").toString()));
+
+                    Picasso.get().load(user.getUserImage()).into(accountImage);
+                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+                    // Log.d("userName",user.getFirstName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue2.add(jsonObjReq);
+
+
+        ;
+    }
+
 
 }

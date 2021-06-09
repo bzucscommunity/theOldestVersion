@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -21,6 +24,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -30,45 +34,43 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.bzu.csc.Adapters.GridSubjectsListTopicAdapter;
+import project.bzu.csc.Adapters.GetCategoriesAdapter;
+import project.bzu.csc.Adapters.SearchResultsAdapter;
+import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.Subject;
 import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
 
+public class SearchResults extends AppCompatActivity {
+    public static Context context;
 
-public class Topic extends AppCompatActivity {
-    RecyclerView recyclerView;
-    List<Subject> subjects;
+    List<Post> posts;
+    String query;
+
     ImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;
-    private String JSON_URL="http://192.168.1.109:8080/api/subject";
-    GridSubjectsListTopicAdapter adapter;
+    RecyclerView searchResults;
+    SearchResultsAdapter searchAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recycler_view_topic_layout);
-        accountImage = findViewById(R.id.account);
-        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
-        userID = sp.getInt("userID" , 0);
-        extractUser();
-        recyclerView = findViewById(R.id.searchPostsList);
-        subjects=new ArrayList<>();
-        extractSubject();
+        setContentView(R.layout.search_results_layout);
 
-
-
-        BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
-        BttomnavigationView.setSelectedItemId(R.id.topic);
+        BottomNavigationView BttomnavigationView = findViewById(R.id.bottomNavigationView);
+        BttomnavigationView.setSelectedItemId(R.id.search);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.homeIcon:
                         startActivity(new Intent(getApplicationContext(), Home.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
+
                         return true;
                     case R.id.question:
                         startActivity(new Intent(getApplicationContext(), Question.class));
@@ -77,54 +79,76 @@ public class Topic extends AppCompatActivity {
 
                     case R.id.topic:
                         startActivity(new Intent(getApplicationContext(), Topic.class));
-                        overridePendingTransition(0,0);
-
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.search:
-                        startActivity(new Intent(getApplicationContext(), Search.class));
-                        overridePendingTransition(0,0);
+
                         return true;
                     case R.id.menu:
                         startActivity(new Intent(getApplicationContext(), Favorits.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
             }
         });
+        accountImage = findViewById(R.id.account);
+        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        userID = sp.getInt("userID" , 0);
+        extractUser();
+        posts = new ArrayList<>();
+        Intent intent = getIntent();
+        query= (String) intent.getExtras().get("query");
+        searchResults = findViewById(R.id.recyclerView2);
+        search(query);
+
     }
-    private void extractSubject() {
-        RequestQueue queue= Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
+        private void search (String query){
 
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i=0; i< response.length();i++){
-                    try {
-                        JSONObject subjectObject = response.getJSONObject(i);
-                        Subject subject = new Subject();
+            RequestQueue queue = Volley.newRequestQueue(this);
+            Log.d("search2", query);
+            String JSON_URL = "http://192.168.1.109:8080/api/searchPosts/" + query;
 
-                        subject.setName(subjectObject.getString("name").toString());
-                        subject.setImageURL(subjectObject.getString("image"));
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
-                        subjects.add(subject);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                @Override
+                public void onResponse(JSONArray response) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject postObject = response.getJSONObject(i);
+                            Post post = new Post();
+                            post.setPostAttachment(postObject.getString("postAttachment").toString());
+                            post.setPostBody(postObject.getString("postBody").toString());
+                            post.setPostID(postObject.getInt("postID"));
+                            post.setPostSubject(postObject.getString("postSubject").toString());
+                            post.setPostTags(postObject.getString("postTags").toString());
+                            post.setPostTitle(postObject.getString("postTitle").toString());
+                            post.setPostType(postObject.getString("postType").toString());
+                            String user1 = postObject.getString("user");
+                            post.setPostTime(postObject.getString("postTime").toString());
+                            ;
+                            Gson g = new Gson();
+                            User user = g.fromJson(user1, User.class);
+                            post.setUser(user);
+
+                            posts.add(post);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false));
+                    searchResults.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                adapter = new GridSubjectsListTopicAdapter(getApplicationContext(),subjects);
-                recyclerView.setAdapter(adapter);
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("tag", "onErrorResponse: " + error.getMessage());
-            }
-        });
-        queue.add(jsonArrayRequest);
-    }
+                    searchAdapter = new SearchResultsAdapter(getApplicationContext(), posts);
+                    searchResults.setAdapter(searchAdapter);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("tag", "onErrorResponse: " + error.getMessage());
+                }
+            });
+            queue.add(jsonArrayRequest);
+        }
 
     private void extractUser() {
 
@@ -170,6 +194,7 @@ public class Topic extends AppCompatActivity {
 
         ;
     }
+
 
 
 }

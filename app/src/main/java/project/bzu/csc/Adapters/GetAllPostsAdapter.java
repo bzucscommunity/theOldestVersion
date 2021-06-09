@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -236,6 +237,7 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
         VideoView video1,video2;
         ConstraintLayout tags,imagesPreviews,videosPreviews;
         CardView cardView;
+        ImageButton favorite;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -245,6 +247,7 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
             postType=itemView.findViewById(R.id.postType);
             postTitle=itemView.findViewById(R.id.post_Title);
             postContent=itemView.findViewById(R.id.post_content);
+            favorite = itemView.findViewById(R.id.fav);
             tag1=itemView.findViewById(R.id.tag1);
             tag2=itemView.findViewById(R.id.tag2);
             tag3=itemView.findViewById(R.id.tag3);

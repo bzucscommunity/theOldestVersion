@@ -16,7 +16,7 @@
         <activity android:name=".Activities.CreatePostFromHome"/>
         <activity android:name=".Activities.CreateQuestionPost"/>
         <activity android:name=".Activities.CreateTopicPost"/>
-        <activity android:name=".Activities.Home">
+        <activity android:name=".Activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,6 +33,9 @@
         <activity android:name=".Activities.ViewQuestionPost"/>
         <activity android:name=".Activities.ViewSearchPost"/>
         <activity android:name=".Activities.ViewTopicPost"/>
+        <activity android:name=".Activities.SearchResults"/>
+        <activity android:name=".Activities.Home"/>
+        <activity android:name=".Activities.Favorits"/>
 
     </application>
 </manifest>
