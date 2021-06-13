@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,7 +50,6 @@ public class QuestionCardView extends AppCompatActivity {
     SharedPreferences sp;
     User user;
     int userID;
-
     String name;
 
     @Override
@@ -140,6 +140,7 @@ public class QuestionCardView extends AppCompatActivity {
                         post.setPostTags(postObject.getString("postTags").toString());
                         post.setPostTitle(postObject.getString("postTitle").toString());
                         post.setPostType(postObject.getString("postType").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment").toString());
                         String user1=  postObject.getString("user");
                         post.setPostTime(postObject.getString("postTime").toString()); ;
                         Gson g = new Gson();

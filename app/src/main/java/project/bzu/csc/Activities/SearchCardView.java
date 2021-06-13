@@ -139,6 +139,7 @@ public class SearchCardView extends AppCompatActivity {
                         post.setPostTags(postObject.getString("postTags").toString());
                         post.setPostTitle(postObject.getString("postTitle").toString());
                         post.setPostType(postObject.getString("postType").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment").toString());
                         String user1=  postObject.getString("user");
                         post.setPostTime(postObject.getString("postTime").toString()); ;
                         Gson g = new Gson();

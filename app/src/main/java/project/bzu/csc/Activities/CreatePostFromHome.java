@@ -149,7 +149,7 @@ public class CreatePostFromHome extends AppCompatActivity {
             postData.put("postTitle", postTitle.getText().toString().trim());
             postData.put("postTags", postTags.getText().toString().trim());
             postData.put("postBody", postBody.getText().toString().trim());
-            postData.put("postAttachment", textFile.getText().toString().trim());
+          //  postData.put("postAttachment", textFile.getText().toString().trim());
             postData.put("postTime", strdate);
           //  postData.put("user",user);
           //  Log.d("user33" , user.toString());

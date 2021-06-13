@@ -4,12 +4,14 @@ package project.bzu.csc.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -212,6 +214,7 @@ public class ViewPostInHome extends AppCompatActivity{
                         post.setPostTags(postObject.getString("postTags").toString());
                         post.setPostTitle(postObject.getString("postTitle").toString());
                         post.setPostType(postObject.getString("postType").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment").toString());
                         String user1=  postObject.getString("user");
                         post.setPostTime(postObject.getString("postTime").toString());
                         Gson g = new Gson();
@@ -272,6 +275,92 @@ public class ViewPostInHome extends AppCompatActivity{
                             tag5.setVisibility(View.VISIBLE);
                             tags.setVisibility(View.VISIBLE);
 
+                        }
+                        String imagesString=post.getPostAttachment();
+                        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
+
+
+                        if(imagesString.length()==0){
+                            imagesPreviews.setVisibility(View.GONE);
+                            image1.setVisibility(View.GONE);
+                            image2.setVisibility(View.GONE);
+                            image3.setVisibility(View.GONE);
+                            image4.setVisibility(View.GONE);
+                            image5.setVisibility(View.GONE);
+                        }
+                        else if(!(imagesString=="")){
+                            String[] imagesArray=imagesString.split(",");
+                            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
+
+                            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
+                            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
+                            if(imagesArray.length==1){
+                                Picasso.get().load(imagesArray[0]).into(image1);
+                                imagesPreviews.setVisibility(View.VISIBLE);
+                                image1.setVisibility(View.VISIBLE);
+                            }else if(imagesArray.length==2){
+                                Picasso.get().load(imagesArray[0]).into(image1);
+                                Picasso.get().load(imagesArray[1]).into(image2);
+                                imagesPreviews.setVisibility(View.VISIBLE);
+                                image1.setVisibility(View.VISIBLE);
+                                image2.setVisibility(View.VISIBLE);
+                            }else if(imagesArray.length==3){
+                                Picasso.get().load(imagesArray[0]).into(image1);
+                                Picasso.get().load(imagesArray[1]).into(image2);
+                                Picasso.get().load(imagesArray[2]).into(image3);
+                                imagesPreviews.setVisibility(View.VISIBLE);
+                                image1.setVisibility(View.VISIBLE);
+                                image2.setVisibility(View.VISIBLE);
+                                image3.setVisibility(View.VISIBLE);
+                            }else if(imagesArray.length==4) {
+                                Picasso.get().load(imagesArray[0]).into(image1);
+                                Picasso.get().load(imagesArray[1]).into(image2);
+                                Picasso.get().load(imagesArray[2]).into(image3);
+                                Picasso.get().load(imagesArray[3]).into(image4);
+                                imagesPreviews.setVisibility(View.VISIBLE);
+                                image1.setVisibility(View.VISIBLE);
+                                image2.setVisibility(View.VISIBLE);
+                                image3.setVisibility(View.VISIBLE);
+                                image4.setVisibility(View.VISIBLE);
+
+                            }else if(imagesArray.length==5) {
+                                Picasso.get().load(imagesArray[0]).into(image1);
+                                Picasso.get().load(imagesArray[1]).into(image2);
+                                Picasso.get().load(imagesArray[2]).into(image3);
+                                Picasso.get().load(imagesArray[3]).into(image4);
+                                Picasso.get().load(imagesArray[4]).into(image5);
+                                imagesPreviews.setVisibility(View.VISIBLE);
+                                image1.setVisibility(View.VISIBLE);
+                                image2.setVisibility(View.VISIBLE);
+                                image3.setVisibility(View.VISIBLE);
+                                image4.setVisibility(View.VISIBLE);
+                                image5.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        if(post.getPostTitle().equalsIgnoreCase("Dijkstra’s Shortest Path Algorithm")) {
+                            String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.video2;
+                            Uri uri = Uri.parse(videoPath);
+                            video1.setVideoURI(uri);
+
+
+                            MediaController mc = new MediaController(context);
+                            video1.setMediaController(mc);
+                            mc.setAnchorView(video1);
+                            videosPreviews.setVisibility(View.VISIBLE);
+                            video1.setVisibility(View.VISIBLE);
+
+                        }
+                        else if(post.getPostTitle().equalsIgnoreCase("Data structures")){
+                            String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.video1;
+                            Uri uri = Uri.parse(videoPath);
+                            video1.setVideoURI(uri);
+
+
+                            MediaController mc = new MediaController(context);
+                            video1.setMediaController(mc);
+                            mc.setAnchorView(video1);
+                            videosPreviews.setVisibility(View.VISIBLE);
+                            video1.setVisibility(View.VISIBLE);
                         }
                         posts.add(post);
 

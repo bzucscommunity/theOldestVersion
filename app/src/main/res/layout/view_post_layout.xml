@@ -166,6 +166,8 @@
                         <ImageView
                             android:id="@+id/image_preview1"
                             style="@style/attachment_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -174,6 +176,8 @@
                         <ImageView
                             android:id="@+id/image_preview2"
                             style="@style/attachment_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:visibility="gone"
@@ -184,6 +188,8 @@
                         <ImageView
                             android:id="@+id/image_preview3"
                             style="@style/attachment_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:visibility="gone"
@@ -194,6 +200,8 @@
                         <ImageView
                             android:id="@+id/image_preview4"
                             style="@style/attachment_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:visibility="gone"
@@ -204,6 +212,8 @@
                         <ImageView
                             android:id="@+id/image_preview5"
                             style="@style/attachment_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:visibility="gone"
@@ -227,8 +237,8 @@
                         <VideoView
                             android:id="@+id/video_preview1"
                             style="@style/attachment_style"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="400dp"
+                            android:layout_height="500dp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

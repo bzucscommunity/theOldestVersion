@@ -107,7 +107,7 @@ public class Favorits extends AppCompatActivity {
 
 
     private void extractPostFromFavorites() {
-        String JSON_URL = "http://192.168.1.109:8080/api/getFavorites";
+        String JSON_URL = "http://192.168.1.109:8080/api/getFavorites/"+userID;
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
