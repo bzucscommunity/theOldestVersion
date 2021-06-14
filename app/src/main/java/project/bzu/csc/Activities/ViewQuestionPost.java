@@ -412,7 +412,7 @@ public class ViewQuestionPost extends AppCompatActivity{
                         comment.setCommentID(commentObject.getInt("commentID"));
                         comment.setBody(commentObject.getString("body"));
                         comment.setCommentTime(commentObject.getString("commentTime"));
-                        comment.setUser(user);
+                        comment.setUserID(userID);
                         comment.setPostID(commentObject.getInt("postID"));
 
                         comments.add(comment);
@@ -425,7 +425,7 @@ public class ViewQuestionPost extends AppCompatActivity{
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                adapter = new GetCommentsAdapter(getApplicationContext(),comments);
+                adapter = new GetCommentsAdapter(getApplicationContext(),comments,users);
                 recyclerView.setAdapter(adapter);
             }
         }, new Response.ErrorListener(){
@@ -461,6 +461,7 @@ public class ViewQuestionPost extends AppCompatActivity{
                     user.setUserImage((response.getString("userImage").toString()));
 
                     Picasso.get().load(user.getUserImage()).into(accountImage);
+                    users.add(user);
                     //  userName.setText(user.getFirstName()+" "+user.getLastName());
                     // Log.d("userName",user.getFirstName());
 

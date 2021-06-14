@@ -59,13 +59,15 @@ import project.bzu.csc.R;
 
 public class ViewPostInHome extends AppCompatActivity{
     List<Post> posts;
-    List<User> users;
+   public ArrayList<User> users;
     List<Comment> comments;
+    List<Integer> IDs;
     TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares,PostClickView;
     ImageView postMoreMenu,image1,image2,image3,image4,image5;
     CircleImageView image;
     ImageButton favorite;
     Post post;
+    User user2=new User();
 
     EditText commentsText;
     RecyclerView recyclerView;
@@ -90,6 +92,7 @@ public class ViewPostInHome extends AppCompatActivity{
 
         sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         userID = sp.getInt("userID" , 0);
+        Log.d("userIdFromSP", String.valueOf(userID));
 
 
         userName=findViewById(R.id.userName);
@@ -157,9 +160,9 @@ public class ViewPostInHome extends AppCompatActivity{
         posts=new ArrayList<>();
         users = new ArrayList<>();
         comments=new ArrayList<>();
+        IDs=new ArrayList<>();
         accountImage = findViewById(R.id.account);
-        sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
-        userID = sp.getInt("userID" , 0);
+
         extractUser();
         extractPosts();
         extractComments();
@@ -406,7 +409,7 @@ public class ViewPostInHome extends AppCompatActivity{
 
         try {
 
-            //postData.put("userID","1170288");
+            postData.put("userID",userID);
             postData.put("postID",postID);
             postData.put("body", commentsText.getText().toString().trim());
             postData.put("commentTime",strdate);
@@ -443,17 +446,24 @@ public class ViewPostInHome extends AppCompatActivity{
                     try {
                         JSONObject commentObject = response.getJSONObject(i);
                         Comment comment = new  Comment();
-                        String user1=  commentObject.getString("user");
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
+//                        String user1=  commentObject.getString("user");
+//                        Gson g = new Gson();
+//                        User user = g.fromJson(user1, User.class);
                         comment.setCommentID(commentObject.getInt("commentID"));
                         comment.setBody(commentObject.getString("body"));
                         comment.setCommentTime(commentObject.getString("commentTime"));
-                        comment.setUser(user);
+                        comment.setUserID(commentObject.getInt("userID"));
+                        IDs.add(comment.getUserID());
+
+                        //users.add(extractUsersForComments(commentObject.getInt("userID")));
+
+
+
                         comment.setPostID(commentObject.getInt("postID"));
 
                         comments.add(comment);
-                        Log.d("TAG", "onResponse: "+ comments.toString());
+                        Log.d("500",comments.toString());
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -462,8 +472,20 @@ public class ViewPostInHome extends AppCompatActivity{
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                adapter = new GetCommentsAdapter(getApplicationContext(),comments);
-                recyclerView.setAdapter(adapter);
+                for (int i=0;i<IDs.size();i++){
+
+
+                User user3 = extractUsersForComments(IDs.get(i));
+                        users.add(user3);
+                    Log.d("IDsArray", user3.toString() + i);
+
+
+                }
+
+
+             //   adapter = new GetCommentsAdapter(getApplicationContext(),comments,users);
+              //  recyclerView.setAdapter(adapter);
+
             }
             }, new Response.ErrorListener(){
             @Override
@@ -532,6 +554,7 @@ public class ViewPostInHome extends AppCompatActivity{
                     user.setUserImage((response.getString("userImage").toString()));
 
                     Picasso.get().load(user.getUserImage()).into(accountImage);
+
                     //  userName.setText(user.getFirstName()+" "+user.getLastName());
                     // Log.d("userName",user.getFirstName());
 
@@ -550,8 +573,55 @@ public class ViewPostInHome extends AppCompatActivity{
         queue2.add(jsonObjReq);
 
 
-        ;
+
     }
+
+    public User extractUsersForComments(int userID){
+        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
+
+        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+
+
+                    user2.setUserID(response.getInt("userID"));
+                    user2.setEmail(response.getString("email").toString());
+                    user2.setUserType(response.getString("userType").toString());
+                    user2.setFirstName(response.getString("firstName").toString());
+                    user2.setLastName(response.getString("lastName").toString());
+                    user2.setUserPassword(response.getString("userPassword").toString());
+                    user2.setUserImage((response.getString("userImage").toString()));
+                     Log.d("user2",user2.toString());
+
+                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+                    // Log.d("userName",user.getFirstName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue2.add(jsonObjReq);
+
+return user2;
+
+
+    }
+
 
 
 
