@@ -45,9 +45,8 @@ public class Question extends AppCompatActivity {
     SharedPreferences sp;
     User user;
     int userID;
-    private String JSON_URL="http://192.168.1.109:8080/api/subject";
+    private String JSON_URL="http://192.168.1.111:8080/api/subject";
     GridSubjectsListQuestionAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +95,7 @@ public class Question extends AppCompatActivity {
 
 
     }
+
     private void extractSubject() {
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
@@ -133,7 +133,7 @@ public class Question extends AppCompatActivity {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -173,7 +173,6 @@ public class Question extends AppCompatActivity {
 
         ;
     }
-
 
 }
 

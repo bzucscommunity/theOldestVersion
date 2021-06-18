@@ -57,9 +57,6 @@ public class CreatePostFromHome extends AppCompatActivity {
     int userID;
     ImageView accountImage;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +125,7 @@ public class CreatePostFromHome extends AppCompatActivity {
 
     private void submitPost() throws JSONException {
 
-        String post_url = "http://192.168.1.109:8080/api/post";
+        String post_url = "http://192.168.1.111:8080/api/post";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
         postTitle = findViewById(R.id.post_title);
@@ -175,9 +172,10 @@ public class CreatePostFromHome extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
     }
+
     private void populateSpinner(){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.1.109:8080/api/subject";
+        String url = "http://192.168.1.111:8080/api/subject";
 
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -208,11 +206,10 @@ public class CreatePostFromHome extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
 
-
     private void extractID() {
         RequestQueue queue= Volley.newRequestQueue(this);
 
-        String JSON_URL="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL="http://192.168.1.111:8080/api/" + userID;
      //   JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 JSON_URL, null, new Response.Listener<JSONObject>() {
@@ -257,7 +254,7 @@ public class CreatePostFromHome extends AppCompatActivity {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override

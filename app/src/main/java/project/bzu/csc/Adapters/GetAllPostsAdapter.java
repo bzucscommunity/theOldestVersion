@@ -80,6 +80,7 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
         if(posts.get(position).getPostType().equals("Question")){
             holder.postType.setText("Q");}
         else if(posts.get(position).getPostType().equals("Topic")){
+
             holder.postType.setText("T");}
 
         holder.postTitle.setText(posts.get(position).getPostTitle());
@@ -129,20 +130,16 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
             holder.tag5.setVisibility(View.VISIBLE);
             holder.tags.setVisibility(View.VISIBLE);
 
+        }else {
+            holder.tags.setVisibility(View.GONE);
         }
         String imagesString=posts.get(position).getPostAttachment();
         //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
 
 
-        if(imagesString==""){
-            holder.imagesPreviews.setVisibility(View.GONE);
-            holder.image1.setVisibility(View.GONE);
-            holder.image2.setVisibility(View.GONE);
-            holder.image3.setVisibility(View.GONE);
-            holder.image4.setVisibility(View.GONE);
-            holder.image5.setVisibility(View.GONE);
-        }
-        else if(!(imagesString=="")){
+        Log.d("TAG", "onBindViewHolder: "+imagesString.length());
+        if(imagesString.length() >5){
+            Log.d("TAG", "onBindViewHolder: hi");
              imagesArray=imagesString.split(",");
             //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
 
@@ -190,6 +187,14 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
                 holder.image4.setVisibility(View.VISIBLE);
                 holder.image5.setVisibility(View.VISIBLE);
             }
+        }else {
+            Log.d("TAG", "onBindViewHolder: hi2");
+            holder.imagesPreviews.setVisibility(View.GONE);
+            holder.image1.setVisibility(View.GONE);
+            holder.image2.setVisibility(View.GONE);
+            holder.image3.setVisibility(View.GONE);
+            holder.image4.setVisibility(View.GONE);
+            holder.image5.setVisibility(View.GONE);
         }
         String flag = posts.get(position).getPostTitle();
         if(flag .equalsIgnoreCase("Dijkstra’s Shortest Path Algorithm")||flag.equalsIgnoreCase("Data structures")){
@@ -261,9 +266,7 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
             tag4=itemView.findViewById(R.id.tag4);
             tag5=itemView.findViewById(R.id.tag5);
 
-            postViews=itemView.findViewById(R.id.post_views);
-            postComments=itemView.findViewById(R.id.post_comments);
-            postShares=itemView.findViewById(R.id.post_shares);
+
             image =  itemView.findViewById(R.id.userImage);
             postMoreMenu=itemView.findViewById(R.id.post_more_menu);
             image1=itemView.findViewById(R.id.image_preview1);

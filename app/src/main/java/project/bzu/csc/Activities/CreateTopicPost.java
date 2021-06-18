@@ -53,8 +53,6 @@ public class CreateTopicPost extends AppCompatActivity {
     int userID;
     private static final int PICKFILE_RESULT_CODE = 1;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,7 +148,7 @@ public class CreateTopicPost extends AppCompatActivity {
     }
 
     private void submitPost() {
-        String post_url = "http://192.168.1.109:8080/api/post";
+        String post_url = "http://192.168.1.111:8080/api/post";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
 
@@ -195,11 +193,12 @@ public class CreateTopicPost extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
     }
+
     private void extractUser() {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override

@@ -96,9 +96,6 @@ public class ViewTopicPost extends AppCompatActivity{
         tag4=findViewById(R.id.tag4);
         tag5=findViewById(R.id.tag5);
 
-        postViews=findViewById(R.id.post_views);
-        postComments=findViewById(R.id.post_comments);
-        postShares=findViewById(R.id.post_shares);
         image = (CircleImageView) findViewById(R.id.userImage);
         postMoreMenu=findViewById(R.id.post_more_menu);
         image1=findViewById(R.id.image_preview1);
@@ -173,7 +170,7 @@ public class ViewTopicPost extends AppCompatActivity{
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
         int postID= (int) intent.getExtras().get("postIDFromTopic");
-        String JSON_URL="http://192.168.1.109:8080/api/getPost/"+postID;
+        String JSON_URL="http://192.168.1.111:8080/api/getPost/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -373,7 +370,7 @@ public class ViewTopicPost extends AppCompatActivity{
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         final String strdate =simple.format(date);
-        String post_url = "http://192.168.1.109:8080/api/postcomment";
+        String post_url = "http://192.168.1.111:8080/api/postcomment";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
         commentsText = findViewById(R.id.editcomments);
@@ -411,7 +408,7 @@ public class ViewTopicPost extends AppCompatActivity{
     private void extractComments() {
         RequestQueue queue= Volley.newRequestQueue(this);
 
-        String JSON_URL2="http://192.168.1.109:8080/api/getComments/"+postID;
+        String JSON_URL2="http://192.168.1.111:8080/api/getComments/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -453,7 +450,7 @@ public class ViewTopicPost extends AppCompatActivity{
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override

@@ -49,7 +49,6 @@ public class TopicCardView extends AppCompatActivity {
     SharedPreferences sp;
     User user;
     int userID;
-
     String name;
 
     @Override
@@ -120,9 +119,10 @@ public class TopicCardView extends AppCompatActivity {
         );
 
     }
+
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.109:8080/api/typeSubject/Topic/"+name;
+        String JSON_URL="http://192.168.1.111:8080/api/typeSubject/Topic/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -172,7 +172,7 @@ public class TopicCardView extends AppCompatActivity {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override

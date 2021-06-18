@@ -107,9 +107,7 @@ public class ViewPostInHome extends AppCompatActivity{
         tag4=findViewById(R.id.tag4);
         tag5=findViewById(R.id.tag5);
 
-        postViews=findViewById(R.id.post_views);
-        postComments=findViewById(R.id.post_comments);
-        postShares=findViewById(R.id.post_shares);
+
         image = (CircleImageView) findViewById(R.id.userImage);
         postMoreMenu=findViewById(R.id.post_more_menu);
         image1=findViewById(R.id.image_preview1);
@@ -199,7 +197,7 @@ public class ViewPostInHome extends AppCompatActivity{
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
         int postID= (int) intent.getExtras().get("postID");
-        String JSON_URL="http://192.168.1.109:8080/api/getPost/"+postID;
+        String JSON_URL="http://192.168.1.111:8080/api/getPost/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -381,6 +379,7 @@ public class ViewPostInHome extends AppCompatActivity{
         });
         queue.add(jsonArrayRequest);
     }
+
     private String calculateTimeAgo(String times) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 
@@ -400,7 +399,7 @@ public class ViewPostInHome extends AppCompatActivity{
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         final String strdate =simple.format(date);
-        String post_url = "http://192.168.1.109:8080/api/postcomment";
+        String post_url = "http://192.168.1.111:8080/api/postcomment";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // postSubject = findViewById(R.id.post_subject);
         commentsText = findViewById(R.id.editcomments);
@@ -438,7 +437,7 @@ public class ViewPostInHome extends AppCompatActivity{
     private void extractComments() {
         RequestQueue queue= Volley.newRequestQueue(this);
 
-        String JSON_URL2="http://192.168.1.109:8080/api/getComments/"+postID;
+        String JSON_URL2="http://192.168.1.111:8080/api/getComments/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -446,30 +445,20 @@ public class ViewPostInHome extends AppCompatActivity{
                     try {
                         JSONObject commentObject = response.getJSONObject(i);
                         Comment comment = new  Comment();
-//                        String user1=  commentObject.getString("user");
-//                        Gson g = new Gson();
-//                        User user = g.fromJson(user1, User.class);
-                        comment.setCommentID(commentObject.getInt("commentID"));
                         comment.setBody(commentObject.getString("body"));
                         comment.setCommentTime(commentObject.getString("commentTime"));
                         comment.setUserID(commentObject.getInt("userID"));
                         IDs.add(comment.getUserID());
-
+                        Log.d("454", "onResponse: "+IDs.toString());
                         //users.add(extractUsersForComments(commentObject.getInt("userID")));
-
-
-
                         comment.setPostID(commentObject.getInt("postID"));
-
                         comments.add(comment);
-                        Log.d("500",comments.toString());
+                        Log.d("458",comments.toString());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                 for (int i=0;i<IDs.size();i++){
@@ -479,12 +468,10 @@ public class ViewPostInHome extends AppCompatActivity{
                         users.add(user3);
                     Log.d("IDsArray", user3.toString() + i);
 
-
                 }
 
-
-             //   adapter = new GetCommentsAdapter(getApplicationContext(),comments,users);
-              //  recyclerView.setAdapter(adapter);
+                adapter = new GetCommentsAdapter(getApplicationContext(),comments,users);
+                recyclerView.setAdapter(adapter);
 
             }
             }, new Response.ErrorListener(){
@@ -497,7 +484,7 @@ public class ViewPostInHome extends AppCompatActivity{
     }
     private void addToFavorites() throws JSONException {
 
-        String post_url = "http://192.168.1.109:8080/api/addTofavorites";
+        String post_url = "http://192.168.1.111:8080/api/addTofavorites";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject postData = new JSONObject();
 
@@ -534,7 +521,7 @@ public class ViewPostInHome extends AppCompatActivity{
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -579,7 +566,7 @@ public class ViewPostInHome extends AppCompatActivity{
     public User extractUsersForComments(int userID){
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
 
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 

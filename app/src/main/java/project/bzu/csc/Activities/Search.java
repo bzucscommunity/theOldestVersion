@@ -58,7 +58,7 @@ public class Search extends AppCompatActivity {
 
     RecyclerView searchResults;
     SearchResultsAdapter searchAdapter;
-    private String JSON_URL="http://192.168.1.109:8080/api/subject";
+    private String JSON_URL="http://192.168.1.111:8080/api/subject";
 
 
     @Override
@@ -107,11 +107,11 @@ public class Search extends AppCompatActivity {
         extractUser();
         extractCategories();
         searchView=findViewById(R.id.search_view);
-       searchView.setQueryHint("Search...");
-       searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setQueryHint("Search...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-               query= searchView.getQuery().toString();
+                query= searchView.getQuery().toString();
                 Log.d("search" , query);
                 Intent intent = new Intent(context, SearchResults.class);
                 intent.putExtra("query",query);
@@ -141,6 +141,7 @@ public class Search extends AppCompatActivity {
             }
         });
     }
+
     private void filter(String text) {
         // creating a new array list to filter our data.
         ArrayList<Post> filteredlist = new ArrayList<>();
@@ -164,6 +165,7 @@ public class Search extends AppCompatActivity {
           //  adapter.filterList(filteredlist);
         }
     }
+
     private void extractCategories() {
 
         RequestQueue queue= Volley.newRequestQueue(this);
@@ -202,7 +204,7 @@ public class Search extends AppCompatActivity {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -242,7 +244,5 @@ public class Search extends AppCompatActivity {
 
         ;
     }
-
-
 
     }

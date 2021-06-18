@@ -39,6 +39,7 @@ public class GetTopicPostsAdapter extends RecyclerView.Adapter<GetTopicPostsAdap
     List<Post> posts;
     List<User> users;
     Context context;
+    String[] imagesArray;
 
     public GetTopicPostsAdapter(Context context, List<Post> posts){
         this.inflater=LayoutInflater.from(context);
@@ -134,16 +135,9 @@ public class GetTopicPostsAdapter extends RecyclerView.Adapter<GetTopicPostsAdap
         //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
 
 
-        if(imagesString==""){
-            holder.imagesPreviews.setVisibility(View.GONE);
-            holder.image1.setVisibility(View.GONE);
-            holder.image2.setVisibility(View.GONE);
-            holder.image3.setVisibility(View.GONE);
-            holder.image4.setVisibility(View.GONE);
-            holder.image5.setVisibility(View.GONE);
-        }
-        else if(!(imagesString=="")){
-            String[] imagesArray=imagesString.split(",");
+        if(imagesString.length() >5){
+            Log.d("TAG", "onBindViewHolder: hi");
+            imagesArray=imagesString.split(",");
             //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
 
             //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
@@ -152,7 +146,7 @@ public class GetTopicPostsAdapter extends RecyclerView.Adapter<GetTopicPostsAdap
                 Picasso.get().load(imagesArray[0]).into(holder.image1);
                 holder.imagesPreviews.setVisibility(View.VISIBLE);
                 holder.image1.setVisibility(View.VISIBLE);
-             }else if(imagesArray.length==2){
+            }else if(imagesArray.length==2){
                 Picasso.get().load(imagesArray[0]).into(holder.image1);
                 Picasso.get().load(imagesArray[1]).into(holder.image2);
                 holder.imagesPreviews.setVisibility(View.VISIBLE);
@@ -190,7 +184,16 @@ public class GetTopicPostsAdapter extends RecyclerView.Adapter<GetTopicPostsAdap
                 holder.image4.setVisibility(View.VISIBLE);
                 holder.image5.setVisibility(View.VISIBLE);
             }
+        }else {
+            Log.d("TAG", "onBindViewHolder: hi2");
+            holder.imagesPreviews.setVisibility(View.GONE);
+            holder.image1.setVisibility(View.GONE);
+            holder.image2.setVisibility(View.GONE);
+            holder.image3.setVisibility(View.GONE);
+            holder.image4.setVisibility(View.GONE);
+            holder.image5.setVisibility(View.GONE);
         }
+
         String flag = posts.get(position).getPostTitle();
         if(flag .equalsIgnoreCase("Dijkstra’s Shortest Path Algorithm")||flag.equalsIgnoreCase("Data structures")){
             Picasso.get().load("https://cdn.icon-icons.com/icons2/792/PNG/512/YOUTUBE_icon-icons.com_65537.png").into(holder.image2);
@@ -270,9 +273,7 @@ public class GetTopicPostsAdapter extends RecyclerView.Adapter<GetTopicPostsAdap
             tag4=itemView.findViewById(R.id.tag4);
             tag5=itemView.findViewById(R.id.tag5);
 
-            postViews=itemView.findViewById(R.id.post_views);
-            postComments=itemView.findViewById(R.id.post_comments);
-            postShares=itemView.findViewById(R.id.post_shares);
+
             image =  itemView.findViewById(R.id.userImage);
             postMoreMenu=itemView.findViewById(R.id.post_more_menu);
             image1=itemView.findViewById(R.id.image_preview1);

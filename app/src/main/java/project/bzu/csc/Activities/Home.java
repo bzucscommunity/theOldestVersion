@@ -97,7 +97,7 @@ public class Home extends AppCompatActivity {
         sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         userID = sp.getInt("userID" , 0);
         extractUser();
-        extractPosts("http://192.168.1.109:8080/api/get");
+        extractPosts("http://192.168.1.111:8080/api/get");
 
         FloatingActionButton fab_addNewPost = findViewById(R.id.fab_add);
         fab_addNewPost.setOnClickListener(new View.OnClickListener(){
@@ -109,6 +109,7 @@ public class Home extends AppCompatActivity {
         );
 
     }
+
     private void extractPosts(String JSON_URL) {
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
@@ -162,7 +163,7 @@ public class Home extends AppCompatActivity {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -202,7 +203,5 @@ public class Home extends AppCompatActivity {
 
         ;
     }
-
-
 
 }

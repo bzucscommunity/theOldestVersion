@@ -84,7 +84,7 @@
                 android:maxHeight="70dp"
                 android:text="Post Body Hint"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_Title" />
+                app:layout_constraintTop_toBottomOf="@+id/post_time" />
 
 
 

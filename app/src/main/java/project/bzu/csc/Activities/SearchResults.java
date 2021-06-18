@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,17 +44,15 @@ import project.bzu.csc.R;
 
 public class SearchResults extends AppCompatActivity {
     public static Context context;
-
     List<Post> posts;
     String query;
-
+    TextView searchText;
     ImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;
     RecyclerView searchResults;
     SearchResultsAdapter searchAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +98,18 @@ public class SearchResults extends AppCompatActivity {
         posts = new ArrayList<>();
         Intent intent = getIntent();
         query= (String) intent.getExtras().get("query");
+        searchText=findViewById(R.id.searchText);
+        searchText.setText(query);
         searchResults = findViewById(R.id.recyclerView2);
         search(query);
 
     }
-        private void search (String query){
+
+    private void search (String query){
 
             RequestQueue queue = Volley.newRequestQueue(this);
             Log.d("search2", query);
-            String JSON_URL = "http://192.168.1.109:8080/api/searchPosts/" + query;
+            String JSON_URL = "http://192.168.1.111:8080/api/searchPosts/" + query;
 
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
@@ -155,7 +157,7 @@ public class SearchResults extends AppCompatActivity {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -195,7 +197,5 @@ public class SearchResults extends AppCompatActivity {
 
         ;
     }
-
-
 
 }

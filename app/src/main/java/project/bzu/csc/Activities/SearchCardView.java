@@ -119,9 +119,10 @@ public class SearchCardView extends AppCompatActivity {
         });
         extractPosts();
     }
+
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.109:8080/api/getPostBySubject/"+name;
+        String JSON_URL="http://192.168.1.111:8080/api/getPostBySubject/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -165,6 +166,7 @@ public class SearchCardView extends AppCompatActivity {
         });
         queue.add(jsonArrayRequest);
     }
+
     private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(SearchCardView.this);
         alertDialog.setTitle("Filter By");
@@ -211,10 +213,11 @@ public class SearchCardView extends AppCompatActivity {
         alert.setCanceledOnTouchOutside(false);
         alert.show();
     }
+
     public void filter(){
         posts.clear();
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.109:8080/api/typeSubject/"+filterBy+"/"+name;
+        String JSON_URL="http://192.168.1.111:8080/api/typeSubject/"+filterBy+"/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -257,11 +260,12 @@ public class SearchCardView extends AppCompatActivity {
         });
         queue.add(jsonArrayRequest);
     }
+
     private void extractUser() {
 
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -301,8 +305,6 @@ public class SearchCardView extends AppCompatActivity {
 
         ;
     }
-
-
 
 }
 

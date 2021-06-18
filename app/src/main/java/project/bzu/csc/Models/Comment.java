@@ -13,6 +13,13 @@ public class Comment {
         super();
     }
 
+    public Comment(String body, String commentTime, int postID, int userID) {
+        this.body = body;
+        this.commentTime = commentTime;
+        this.postID = postID;
+        this.userID = userID;
+    }
+
     public Comment(int commentID, String body, String commentTime, int postID, int userID) {
         this.commentID = commentID;
         this.body = body;

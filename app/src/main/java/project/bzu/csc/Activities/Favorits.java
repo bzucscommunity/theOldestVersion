@@ -100,14 +100,10 @@ public class Favorits extends AppCompatActivity {
         extractUser();
         extractPostFromFavorites();
 
-
-
-
 }
 
-
     private void extractPostFromFavorites() {
-        String JSON_URL = "http://192.168.1.109:8080/api/getFavorites/"+userID;
+        String JSON_URL = "http://192.168.1.111:8080/api/getFavorites/"+userID;
         RequestQueue queue= Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
@@ -128,7 +124,7 @@ public class Favorits extends AppCompatActivity {
 //                        for (int i2 = 0; i2 < favoritesList.size(); i2++) {
                             int postID = favoritesList.get(i).getPostID();
                             Log.d("postIDInFav", String.valueOf(favoritesList.size()));
-                            String JSON_URL2 = "http://192.168.1.109:8080/api/getPost/" + postID;
+                            String JSON_URL2 = "http://192.168.1.111:8080/api/getPost/" + postID;
                             RequestQueue queue1 = Volley.newRequestQueue(getApplicationContext());
                             JsonArrayRequest jsonArrayRequest2 = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
 
@@ -196,7 +192,7 @@ public class Favorits extends AppCompatActivity {
 
 
                         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-                        String JSON_URL2="http://192.168.1.109:8080/api/" + userID;
+                        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
                         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
 
                             @Override

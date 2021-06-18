@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -37,10 +38,12 @@ public class Login extends AppCompatActivity {
     EditText userID, password;
     Button login;
     TextView register;
-    boolean isEmailValid, isPasswordValid;
+    boolean flag=false;
     TextInputLayout emailError, passError;
     SharedPreferences sp;
     int ID;
+    String pass;
+
 
 
     @Override
@@ -59,13 +62,25 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  SetValidation();
+
                 SharedPreferences.Editor editor = sp.edit();
-                 ID = Integer.parseInt(userID.getText().toString());
-                editor.putInt("userID",ID);
-                editor.commit();
-                Intent intent = new Intent(getApplicationContext(), Home.class);
-                startActivity(intent);
+                if(!userID.getText().toString().equals("") && !password.getText().toString().equals("")){
+                    ID = Integer.parseInt(userID.getText().toString());
+                    pass= password.getText().toString();
+                    boolean validated=SetValidation(ID,pass);
+                    if(validated){
+                        editor.putInt("userID",ID);
+                        editor.commit();
+                        Intent intent = new Intent(getApplicationContext(), Home.class);
+                        startActivity(intent);}
+                    else{
+                        Toast.makeText(Login.this, "Try Again!", Toast.LENGTH_SHORT).show();
+                        userID.setText("");
+                        password.setText("");
+                    }
+                }else {
+                    Toast.makeText(Login.this, "Fill Fields!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -78,6 +93,48 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+    public boolean SetValidation(int id,String password){
+        RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL="http://192.168.1.111:8080/api/" + id;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONObject>() {
 
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    User user=new User();
+
+                    user.setUserID(response.getInt("userID"));
+                    user.setEmail(response.getString("email").toString());
+                    user.setUserType(response.getString("userType").toString());
+                    user.setFirstName(response.getString("firstName").toString());
+                    user.setLastName(response.getString("lastName").toString());
+                    user.setUserPassword(response.getString("userPassword").toString());
+                    user.setUserImage((response.getString("userImage").toString()));
+                    if(user.getUserPassword().equals(password) && user!=null){
+                        flag=true;
+                    }
+
+                    Log.d("TAG", "onResponse: "+user.toString());
+                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+                    // Log.d("userName",user.getFirstName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue.add(jsonObjReq);
+
+
+        return flag;
+    }
 
 }
