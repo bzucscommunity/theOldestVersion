@@ -81,7 +81,8 @@ public class SearchResults extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.search:
-
+                        startActivity(new Intent(getApplicationContext(), Search.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.menu:
                         startActivity(new Intent(getApplicationContext(), Favorits.class));

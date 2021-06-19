@@ -47,30 +47,28 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-                <TextView
-                    android:id="@+id/post_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="286dp"
-                    android:layout_marginLeft="286dp"
-                    android:layout_marginTop="4dp"
-                    android:text="Time Posted"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/postType" />
+            <TextView
+                android:id="@+id/post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Time Posted"
+                app:layout_constraintEnd_toEndOf="@+id/postType"
+                app:layout_constraintTop_toBottomOf="@+id/postType" />
 
 
             <TextView
                 android:id="@+id/postType"
                 android:layout_width="22dp"
                 android:layout_height="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:background="#0E0E52"
                 android:gravity="center"
                 android:text="Letter"
                 android:textAllCaps="true"
                 android:textColor="#F8F7F7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.939"
-                app:layout_constraintStart_toEndOf="@+id/post_Title"
                 app:layout_constraintTop_toBottomOf="@+id/post_more_menu" />
 
             <TextView

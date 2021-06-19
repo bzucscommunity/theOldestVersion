@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,7 +54,7 @@ public class GetCategoriesAdapter extends RecyclerView.Adapter<GetCategoriesAdap
         holder.subjectName.setText(subjects.get(position).getName());
       //  holder.Icon.setVisibility(View.VISIBLE);
         Picasso.get().load(subjects.get(position).getImageURL()).into(holder.subjectImage);
-
+        holder.Icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_keyboard_arrow_right_24));
      //   holder.Icon.getDrawable(ic_baseline_keyboard_arrow_right_24);
 //        Drawable drawable=holder.Icon.getDrawable();
       //  Picasso.get().load().into(holder.Icon);

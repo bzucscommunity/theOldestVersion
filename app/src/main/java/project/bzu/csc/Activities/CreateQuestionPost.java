@@ -111,7 +111,13 @@ public class CreateQuestionPost extends AppCompatActivity {
             public void onClick(View v) {
 
                 submitPost();
-                Toast.makeText(CreateQuestionPost.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateQuestionPost.this, "Post Posted!", Toast.LENGTH_SHORT).show();
+
+                postTitle.setText("");
+                postTags.setText("");
+                postBody.setText("");
+                textFile.setText("");
+
             }
         });
 

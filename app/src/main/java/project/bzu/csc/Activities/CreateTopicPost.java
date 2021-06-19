@@ -113,6 +113,7 @@ public class CreateTopicPost extends AppCompatActivity {
 
                 submitPost();
                 Toast.makeText(CreateTopicPost.this, "Success", Toast.LENGTH_SHORT).show();
+
             }
         });
 
