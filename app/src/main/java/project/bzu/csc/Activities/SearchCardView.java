@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetCategoriesPostsAdapter;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
@@ -65,7 +66,7 @@ public class SearchCardView extends AppCompatActivity {
     String name;
     Dialog dialog;
     String filterBy;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;

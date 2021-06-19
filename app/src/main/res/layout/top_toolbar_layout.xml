@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/primary"
-
-
     >
 
     <RelativeLayout
@@ -13,16 +11,16 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/ic_baseline_account_circle_50">
+            app:srcCompat="@drawable/ic_baseline_account_circle_50"/>
 
-        </ImageView>
+
 
         <TextView
             android:id="@+id/appName"

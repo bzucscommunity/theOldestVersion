@@ -5,13 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1">
+    android:background="#F0FFFF">
 
     <include
         android:id="@+id/top_toolbar"
-
         layout="@layout/top_toolbar_layout"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

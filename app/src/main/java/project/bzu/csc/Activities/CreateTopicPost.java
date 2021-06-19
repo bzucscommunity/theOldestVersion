@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.spinnerAdapter;
 import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
@@ -47,7 +48,7 @@ public class CreateTopicPost extends AppCompatActivity {
     TextView textFile;
     Intent intent;
     String name;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;

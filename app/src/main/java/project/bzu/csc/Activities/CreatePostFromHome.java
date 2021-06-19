@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.Subject;
 import project.bzu.csc.Models.User;
@@ -55,7 +56,7 @@ public class CreatePostFromHome extends AppCompatActivity {
     SharedPreferences sp;
     User user;
     int userID;
-    ImageView accountImage;
+    CircleImageView accountImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

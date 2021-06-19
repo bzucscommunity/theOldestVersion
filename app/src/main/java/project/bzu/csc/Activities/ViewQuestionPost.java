@@ -64,7 +64,7 @@ public class ViewQuestionPost extends AppCompatActivity{
     EditText commentsText;
     RecyclerView recyclerView;
     GetCommentsAdapter adapter;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     int userID;
     public static Context context;

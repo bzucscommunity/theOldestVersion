@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GridSubjectsListTopicAdapter;
 import project.bzu.csc.Models.Subject;
 import project.bzu.csc.Models.User;
@@ -39,7 +40,7 @@ import project.bzu.csc.R;
 public class Topic extends AppCompatActivity {
     RecyclerView recyclerView;
     List<Subject> subjects;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;

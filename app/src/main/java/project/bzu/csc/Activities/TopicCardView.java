@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetTopicPostsAdapter;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
@@ -45,7 +46,7 @@ public class TopicCardView extends AppCompatActivity {
     List<User> users;
     RecyclerView recyclerView;
     GetTopicPostsAdapter adapter;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;

@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetCategoriesAdapter;
 import project.bzu.csc.Adapters.SearchResultsAdapter;
 import project.bzu.csc.Models.Post;
@@ -51,7 +52,7 @@ public class Search extends AppCompatActivity {
     ImageView icon;
     RecyclerView browseCategories;
     GetCategoriesAdapter adapter;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;

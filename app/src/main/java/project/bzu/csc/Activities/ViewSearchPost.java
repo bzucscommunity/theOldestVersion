@@ -59,7 +59,7 @@ public class ViewSearchPost extends AppCompatActivity {
     RecyclerView recyclerView;
     GetCommentsAdapter adapter;
     public static Context context;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     int userID;
 

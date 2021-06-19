@@ -80,7 +80,7 @@ public class ViewPostInHome extends AppCompatActivity{
     User user = new User();
     SharedPreferences sp;
     int userID;
-    ImageView accountImage;
+    CircleImageView accountImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetAllPostsAdapter;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
@@ -48,7 +49,7 @@ public class Home extends AppCompatActivity {
     RecyclerView recyclerView;
     GetAllPostsAdapter adapter;
     TextView test;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;

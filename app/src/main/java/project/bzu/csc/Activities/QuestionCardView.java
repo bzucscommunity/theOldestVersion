@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetQuestionPostsAdapter;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
@@ -46,7 +47,7 @@ public class QuestionCardView extends AppCompatActivity {
     List<User> users;
     RecyclerView recyclerView;
     GetQuestionPostsAdapter adapter;
-    ImageView accountImage;
+    CircleImageView accountImage;
     SharedPreferences sp;
     User user;
     int userID;
