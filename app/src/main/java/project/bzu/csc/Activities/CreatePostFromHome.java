@@ -118,13 +118,14 @@ public class CreatePostFromHome extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), "Post Posted!", Toast.LENGTH_SHORT).show();
+
                 postTypeSpinner.setSelection(0);
                 subjectNameSpinner.setSelection(0);
                 postTitle.setText("");
                 postTags.setText("");
                 postBody.setText("");
                 textFile.setText("");
+                Toast.makeText(getApplicationContext(), "Post Posted!", Toast.LENGTH_SHORT).show();
             }
         });
 

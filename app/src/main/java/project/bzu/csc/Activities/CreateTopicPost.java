@@ -113,6 +113,10 @@ public class CreateTopicPost extends AppCompatActivity {
             public void onClick(View v) {
 
                 submitPost();
+                postTitle.setText("");
+                postTags.setText("");
+                postBody.setText("");
+                textFile.setText("");
                 Toast.makeText(CreateTopicPost.this, "Success", Toast.LENGTH_SHORT).show();
 
             }
