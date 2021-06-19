@@ -111,7 +111,7 @@ public class Login extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-                    if(user.getUserPassword().equals(password) && user!=null){
+                    if(user.getUserPassword().equals(pass) && user!=null){
                         flag=true;
                     }
 

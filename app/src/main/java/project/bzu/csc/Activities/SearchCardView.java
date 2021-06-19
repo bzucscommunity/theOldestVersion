@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,7 +53,7 @@ public class SearchCardView extends AppCompatActivity {
     List<User> users;
     RecyclerView recyclerView;
     GetCategoriesPostsAdapter adapter;
-
+    TextView categoriesText;
     String name;
     Dialog dialog;
     String filterBy;
@@ -66,8 +67,12 @@ public class SearchCardView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         name = intent.getStringExtra("subjectNameFromSearch");
+        Log.d("TAG", "onCreate: "+name);
+
         Log.d("TAG", "onCreate: YESS??" + name);
         setContentView(R.layout.recycler_view_search_layout);
+        categoriesText=findViewById(R.id.categoryText);
+        categoriesText.setText(name);
         BottomNavigationView BttomnavigationView = findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.search);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -99,7 +104,7 @@ public class SearchCardView extends AppCompatActivity {
                 return false;
             }
         });
-        recyclerView = findViewById(R.id.searchPostsList);
+        recyclerView = findViewById(R.id.categoriesPostsList);
         posts = new ArrayList<>();
         users = new ArrayList<>();
         accountImage = findViewById(R.id.account);
