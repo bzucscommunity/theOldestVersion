@@ -142,10 +142,9 @@ public class CreatePostFromHome extends AppCompatActivity {
         subjectNameSpinner= findViewById(R.id.subjectNameSpinner);
         JSONObject postData = new JSONObject();
         Date date =new Date();
+        Date currentDate=new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         final String strdate =simple.format(date);
-
-
 
         try {
             postData.put("postType", postTypeSpinner.getSelectedItem().toString().trim());

@@ -1,6 +1,7 @@
 package project.bzu.csc.Models;
 
 
+
 public class Post {
 
     private int postID;
@@ -10,8 +11,11 @@ public class Post {
     private String postTags;
     private String postBody;
     private String postAttachment;
+
     private User user;
     private String postTime;
+
+
 
 
     public Post() {
@@ -19,7 +23,7 @@ public class Post {
     }
 
     public Post(int postID, String postType, String postSubject, String postTitle, String postTags,
-                String postBody, String postAttachment,User user,String postTime) {
+                String postBody, String postAttachment,String postTime,User user) {
         super();
         this.postID = postID;
         this.postType = postType;
@@ -95,7 +99,6 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
     }
-
     public String getPostTime() {
         return postTime;
     }

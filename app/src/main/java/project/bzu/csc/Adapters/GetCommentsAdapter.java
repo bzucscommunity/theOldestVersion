@@ -22,13 +22,13 @@ public class GetCommentsAdapter  extends RecyclerView.Adapter<GetCommentsAdapter
     LayoutInflater inflater;
     List<Comment> comments;
     Context context;
-    List<User>users;
 
-    public GetCommentsAdapter(Context context, List<Comment> comments,List<User>users){
+
+    public GetCommentsAdapter(Context context, List<Comment> comments){
         this.inflater=LayoutInflater.from(context);
         this.comments = comments;
         this.context=context;
-        this.users=users;
+
 
 
 
@@ -43,9 +43,9 @@ public class GetCommentsAdapter  extends RecyclerView.Adapter<GetCommentsAdapter
 
     @Override
     public void onBindViewHolder(@NonNull GetCommentsAdapter.ViewHolder holder, int position) {
-        holder.usernameText.setText(users.get(position).getUserName());
+        holder.usernameText.setText(comments.get(position).getUserName());
         holder.bodyComment.setText(comments.get(position).getBody());
-        Picasso.get().load(users.get(position).getUserImage()).into(holder.ImageViewComment);
+        Picasso.get().load(comments.get(position).getUserImage()).into(holder.ImageViewComment);
     }
 
     @Override

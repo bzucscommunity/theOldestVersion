@@ -59,28 +59,22 @@ import project.bzu.csc.R;
 
 public class ViewPostInHome extends AppCompatActivity{
     List<Post> posts;
-   public ArrayList<User> users;
+    public ArrayList<User> users;
     List<Comment> comments;
     List<Integer> IDs;
-    TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares,PostClickView;
+    TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,PostClickView;
     ImageView postMoreMenu,image1,image2,image3,image4,image5;
-    CircleImageView image;
     ImageButton favorite;
     Post post;
-    User user2=new User();
-
     EditText commentsText;
     RecyclerView recyclerView;
     GetCommentsAdapter adapter;
     public static Context context;
-
-    VideoView video1,video2,video3,video4,video5;
+    VideoView video1,video2;
     ConstraintLayout tags,imagesPreviews,videosPreviews;
-    int postID;
-    User user = new User();
+    int postID,userID;
     SharedPreferences sp;
-    int userID;
-    CircleImageView accountImage;
+    CircleImageView image,accountImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,6 +164,11 @@ public class ViewPostInHome extends AppCompatActivity{
 
                 try {
                     addComment();
+                    Intent intent=new Intent(getApplicationContext(),ViewPostInHome.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("postID",postID);
+                    startActivity(intent);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -437,7 +436,7 @@ public class ViewPostInHome extends AppCompatActivity{
     private void extractComments() {
         RequestQueue queue= Volley.newRequestQueue(this);
 
-        String JSON_URL2="http://192.168.1.111:8080/api/getComments/"+postID;
+        String JSON_URL2="http://192.168.1.111:8080/api/getPostComments/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -448,29 +447,19 @@ public class ViewPostInHome extends AppCompatActivity{
                         comment.setBody(commentObject.getString("body"));
                         comment.setCommentTime(commentObject.getString("commentTime"));
                         comment.setUserID(commentObject.getInt("userID"));
-                        IDs.add(comment.getUserID());
-                        Log.d("454", "onResponse: "+IDs.toString());
-                        //users.add(extractUsersForComments(commentObject.getInt("userID")));
                         comment.setPostID(commentObject.getInt("postID"));
+                        comment.setFirstName(commentObject.getString("firstName"));
+                        comment.setLastName(commentObject.getString("lastName"));
+                        comment.setUserImage(commentObject.getString("userImage"));
                         comments.add(comment);
-                        Log.d("458",comments.toString());
+                        Log.d("456",comments.toString());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                for (int i=0;i<IDs.size();i++){
-
-
-                User user3 = extractUsersForComments(IDs.get(i));
-                        users.add(user3);
-                    Log.d("IDsArray", user3.toString() + i);
-
-                }
-
-                adapter = new GetCommentsAdapter(getApplicationContext(),comments,users);
+                adapter = new GetCommentsAdapter(getApplicationContext(),comments);
                 recyclerView.setAdapter(adapter);
 
             }
@@ -563,53 +552,53 @@ public class ViewPostInHome extends AppCompatActivity{
 
     }
 
-    public User extractUsersForComments(int userID){
-        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-
-        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-
-
-
-                    user2.setUserID(response.getInt("userID"));
-                    user2.setEmail(response.getString("email").toString());
-                    user2.setUserType(response.getString("userType").toString());
-                    user2.setFirstName(response.getString("firstName").toString());
-                    user2.setLastName(response.getString("lastName").toString());
-                    user2.setUserPassword(response.getString("userPassword").toString());
-                    user2.setUserImage((response.getString("userImage").toString()));
-                     Log.d("user2",user2.toString());
-
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("tag", "onErrorResponse: " + error.getMessage());
-            }
-        });
-        queue2.add(jsonObjReq);
-
-return user2;
-
-
-    }
-
-
+//    public User extractUsersForComments(int userID){
+//        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
+//
+//        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
+//
+//        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//                try {
+//
+//
+//
+//
+//                    user2.setUserID(response.getInt("userID"));
+//                    user2.setEmail(response.getString("email").toString());
+//                    user2.setUserType(response.getString("userType").toString());
+//                    user2.setFirstName(response.getString("firstName").toString());
+//                    user2.setLastName(response.getString("lastName").toString());
+//                    user2.setUserPassword(response.getString("userPassword").toString());
+//                    user2.setUserImage((response.getString("userImage").toString()));
+//                     Log.d("user2",user2.toString());
+//
+//                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
+//                    // Log.d("userName",user.getFirstName());
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//
+//        }, new Response.ErrorListener(){
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+//            }
+//        });
+//        queue2.add(jsonObjReq);
+//
+//return user2;
+//
+//
+//    }
+//
+//
 
 
 

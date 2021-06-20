@@ -169,6 +169,10 @@ public class ViewQuestionPost extends AppCompatActivity{
 
                 try {
                     addComment();
+                    Intent intent=new Intent(getApplicationContext(),ViewQuestionPost.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("postID",postID);
+                    startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -367,7 +371,7 @@ public class ViewQuestionPost extends AppCompatActivity{
 
         try {
 
-            //postData.put("userID","1170288");
+            postData.put("userID",userID);
             postData.put("postID",postID);
             postData.put("body", commentsText.getText().toString().trim());
             postData.put("commentTime",strdate);
@@ -380,7 +384,7 @@ public class ViewQuestionPost extends AppCompatActivity{
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("tag", response.toString());
+                Log.d("TAG", "comment posted"+response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -396,7 +400,7 @@ public class ViewQuestionPost extends AppCompatActivity{
     private void extractComments() {
         RequestQueue queue= Volley.newRequestQueue(this);
 
-        String JSON_URL2="http://192.168.1.111:8080/api/getComments/"+postID;
+        String JSON_URL2="http://192.168.1.111:8080/api/getPostComments/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -404,27 +408,24 @@ public class ViewQuestionPost extends AppCompatActivity{
                     try {
                         JSONObject commentObject = response.getJSONObject(i);
                         Comment comment = new  Comment();
-                        String user1=  commentObject.getString("user");
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        comment.setCommentID(commentObject.getInt("commentID"));
                         comment.setBody(commentObject.getString("body"));
                         comment.setCommentTime(commentObject.getString("commentTime"));
-                        comment.setUserID(userID);
+                        comment.setUserID(commentObject.getInt("userID"));
                         comment.setPostID(commentObject.getInt("postID"));
-
+                        comment.setFirstName(commentObject.getString("firstName"));
+                        comment.setLastName(commentObject.getString("lastName"));
+                        comment.setUserImage(commentObject.getString("userImage"));
                         comments.add(comment);
-                        Log.d("TAG", "onResponse: "+ comments.toString());
+                        Log.d("456",comments.toString());
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                adapter = new GetCommentsAdapter(getApplicationContext(),comments,users);
+                adapter = new GetCommentsAdapter(getApplicationContext(),comments);
                 recyclerView.setAdapter(adapter);
+
             }
         }, new Response.ErrorListener(){
             @Override
