@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class QuestionCardView extends AppCompatActivity {
     User user;
     int userID;
     String name;
+    TextView subjectText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class QuestionCardView extends AppCompatActivity {
         name= intent.getStringExtra("subjectNameFromQuestion");
         Log.d("TAG", "onCreate: YESS??"+name);
         setContentView(R.layout.recycler_view_with_add_layout);
+        subjectText=findViewById(R.id.subjectText);
+        subjectText.setText(name);
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.question);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

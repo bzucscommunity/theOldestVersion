@@ -10,6 +10,21 @@
     android:padding="16dp">
 <!--    tools:context=".LoginActivity">-->
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-140dp"
+        android:gravity="center"
+        android:text="CS Community"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,4 +116,5 @@
         android:background="@drawable/round_background"
         android:padding="15dp"
         app:srcCompat="@drawable/ic_baseline_account_circle_50"/>
+
 </RelativeLayout>

@@ -58,7 +58,7 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=this;
-        setContentView(R.layout.recycler_view_with_add_layout);
+        setContentView(R.layout.recycler_view_with_add_home_layout);
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.homeIcon);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -89,7 +89,7 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
-        recyclerView = findViewById(R.id.subjectsList);
+        recyclerView = findViewById(R.id.subjectsList2);
 
 
         posts=new ArrayList<>();

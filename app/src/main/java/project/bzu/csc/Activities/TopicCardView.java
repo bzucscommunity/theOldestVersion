@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +52,7 @@ public class TopicCardView extends AppCompatActivity {
     User user;
     int userID;
     String name;
-
+    TextView subjectText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,8 @@ public class TopicCardView extends AppCompatActivity {
         name= intent.getStringExtra("subjectNameFromTopic");
         Log.d("TAG", "onCreate: YESS??"+name);
         setContentView(R.layout.recycler_view_with_add_layout);
-
+        subjectText=findViewById(R.id.subjectText);
+        subjectText.setText(name);
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.topic);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
