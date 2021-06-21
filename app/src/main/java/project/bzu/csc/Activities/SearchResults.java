@@ -108,7 +108,7 @@ public class SearchResults extends AppCompatActivity {
         Intent intent = getIntent();
         query= (String) intent.getExtras().get("query");
         searchText=findViewById(R.id.searchText);
-        searchText.setText(query);
+        searchText.setText("Searched For: "+query);
         searchResults = findViewById(R.id.recyclerView2);
         search(query);
 

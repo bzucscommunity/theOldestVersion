@@ -57,7 +57,7 @@ import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
 
 
-public class ViewQuestionPost extends AppCompatActivity{
+public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     List<Post> posts;
     List<User> users;
     List<Comment> comments;
@@ -106,8 +106,9 @@ public class ViewQuestionPost extends AppCompatActivity{
         postMoreMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(getApplicationContext(), v);
+                PopupMenu popup = new PopupMenu(ViewQuestionPost.this, v);
                 MenuInflater inflater = popup.getMenuInflater();
+                popup.setOnMenuItemClickListener(ViewQuestionPost.this);
                 inflater.inflate(R.menu.post_menu, popup.getMenu());
                 popup.show();
             }
@@ -504,6 +505,26 @@ public class ViewQuestionPost extends AppCompatActivity{
 
 
         ;
+    }
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_post:
+                editPost();
+                return true;
+            case R.id.delete_post:
+                deletePost();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void deletePost() {
+    }
+
+    private void editPost() {
+
     }
 
 }
