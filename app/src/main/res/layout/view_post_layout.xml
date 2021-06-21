@@ -87,23 +87,25 @@
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
                         android:background="#FFFFFF"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:menu="@menu/post_menu"
                         app:showAsAction="always"
-                        app:srcCompat="@drawable/ic_baseline_more_horiz_24"
-                       />
+                        app:srcCompat="@drawable/ic_baseline_more_horiz_24" />
 
                     <TextView
                         android:id="@+id/postType"
                         android:layout_width="22dp"
                         android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
                         android:background="@color/qt"
                         android:gravity="center"
                         android:text="Letter"
                         android:textAllCaps="true"
                         android:textColor="#F8F7F7"
-                        app:layout_constraintEnd_toEndOf="@+id/post_more_menu"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/post_more_menu" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -346,6 +346,11 @@ public class ViewFavoritePost extends AppCompatActivity{
                                 image5.setVisibility(View.VISIBLE);
                             }
                         }
+                        if(post.getUser().getUserID()==userID){
+                            postMoreMenu.setVisibility(View.VISIBLE);
+                        }else{
+                            postMoreMenu.setVisibility(View.GONE);
+                        }
                         posts.add(post);
 
                     } catch (JSONException e) {
