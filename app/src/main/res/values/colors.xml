@@ -12,5 +12,11 @@
     <color name="colorPrimaryDark">#76a5df</color>
     <color name="colorAccent">#ffff8800</color>
     <color name="zircon">#e0e6e4</color>
-
+    <color name="one">#5BA380</color>
+    <color name="two">#3A8261</color>
+    <color name="three">#176344</color>
+    <color name="four">#004529</color>
+    <color name="five">#00290F</color>
+    <color name="qt">#0E0E52</color>
+    <color name="tag">#547FB5</color>
 </resources>

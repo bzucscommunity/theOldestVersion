@@ -13,6 +13,7 @@ import android.widget.Toast;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
@@ -43,6 +45,7 @@ public class Login extends AppCompatActivity {
     SharedPreferences sp;
     int ID;
     String pass;
+    CircleImageView profile;
 
 
 
@@ -50,7 +53,8 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.login_layout);
-
+        profile=findViewById(R.id.profile);
+        profile.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.logo2));
         userID = (EditText) findViewById(R.id.ID);
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.login);

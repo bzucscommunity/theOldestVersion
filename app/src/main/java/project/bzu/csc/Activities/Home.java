@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -130,7 +131,7 @@ public class Home extends AppCompatActivity {
                         post.setPostTitle(postObject.getString("postTitle").toString());
                         post.setPostType(postObject.getString("postType").toString());
                         String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString()); ;
+                        post.setPostTime(postObject.getString("postTime").toString());
                         Gson g = new Gson();
                         User user = g.fromJson(user1, User.class);
 

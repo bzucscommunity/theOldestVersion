@@ -63,7 +63,7 @@
                 android:layout_height="20dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:background="#0E0E52"
+                android:background="@color/qt"
                 android:gravity="center"
                 android:text="Letter"
                 android:textAllCaps="true"

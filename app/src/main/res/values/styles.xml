@@ -4,7 +4,7 @@
     <style name="tag_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">#547FB5</item>
+        <item name="android:background">@color/tag</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">14sp</item>
         <item name="android:minWidth">25dp</item>
@@ -14,7 +14,7 @@
     <style name="tag_item_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">#547FB5</item>
+        <item name="android:background">@color/tag</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">14sp</item>
         <item name="android:minWidth">25dp</item>
