@@ -57,7 +57,7 @@ import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
 
 
-public class ViewQuestionPost extends AppCompatActivity{
+public class ViewFavoritePost extends AppCompatActivity{
     List<Post> posts;
     List<User> users;
     List<Comment> comments;
@@ -87,7 +87,7 @@ public class ViewQuestionPost extends AppCompatActivity{
         setContentView(R.layout.view_post_layout);
 
         Intent intent = getIntent();
-        postID= (int) intent.getExtras().get("postIDFromQuestion");
+        postID= (int) intent.getExtras().get("postIDFromFavorite");
 
         userName=findViewById(R.id.userName);
         postTime=findViewById(R.id.post_time);
@@ -146,7 +146,7 @@ public class ViewQuestionPost extends AppCompatActivity{
         userID = sp.getInt("userID" , 0);
         extractUser();
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
-        BttomnavigationView.setSelectedItemId(R.id.question);
+        BttomnavigationView.setSelectedItemId(R.id.menu);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -188,14 +188,14 @@ public class ViewQuestionPost extends AppCompatActivity{
 
                 try {
                     addComment();
-                    Intent intent=new Intent(getApplicationContext(),ViewQuestionPost.class);
+                    Intent intent=new Intent(getApplicationContext(),ViewFavoritePost.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("postID",postID);
                     startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(ViewQuestionPost.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewFavoritePost.this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -205,7 +205,7 @@ public class ViewQuestionPost extends AppCompatActivity{
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
-        int postID= (int) intent.getExtras().get("postIDFromQuestion");
+        int postID= (int) intent.getExtras().get("postIDFromFavorite");
         String JSON_URL="http://192.168.1.111:8080/api/getPost/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
@@ -339,7 +339,7 @@ public class ViewQuestionPost extends AppCompatActivity{
                                 Picasso.get().load(imagesArray[3]).into(image4);
                                 Picasso.get().load(imagesArray[4]).into(image5);
                                 imagesPreviews.setVisibility(View.VISIBLE);
-                               image1.setVisibility(View.VISIBLE);
+                                image1.setVisibility(View.VISIBLE);
                                 image2.setVisibility(View.VISIBLE);
                                 image3.setVisibility(View.VISIBLE);
                                 image4.setVisibility(View.VISIBLE);

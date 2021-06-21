@@ -37,6 +37,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetAllPostsAdapter;
+import project.bzu.csc.Adapters.GetFavoritePostsAdapter;
 import project.bzu.csc.Models.Favorites;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
@@ -48,7 +49,7 @@ public class Favorits extends AppCompatActivity {
     List<User> users;
     List<Favorites> favoritesList;
     RecyclerView recyclerView;
-    GetAllPostsAdapter adapter;
+    GetFavoritePostsAdapter adapter;
     TextView userName;
     CircleImageView accountImage;
     ImageView userImage;
@@ -172,7 +173,7 @@ public class Favorits extends AppCompatActivity {
                                     }
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                                    adapter = new GetAllPostsAdapter(getApplicationContext(), posts);
+                                    adapter = new GetFavoritePostsAdapter(getApplicationContext(), posts);
                                     recyclerView.setAdapter(adapter);
                                 }
                             }, new Response.ErrorListener() {

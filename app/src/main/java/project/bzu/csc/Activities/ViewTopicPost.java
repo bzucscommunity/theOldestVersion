@@ -7,10 +7,13 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.MediaController;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +62,7 @@ public class ViewTopicPost extends AppCompatActivity{
     List<User> users;
     List<Comment> comments;
     TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares,PostClickView;
-    ImageView postMoreMenu,image1,image2,image3,image4,image5;
+    ImageView image1,image2,image3,image4,image5;
     CircleImageView image;
     EditText commentsText;
     RecyclerView recyclerView;
@@ -67,7 +70,7 @@ public class ViewTopicPost extends AppCompatActivity{
     public static Context context;
     CircleImageView accountImage;
     SharedPreferences sp;
-
+    ImageButton postMoreMenu;
     int userID;
 
     VideoView video1,video2,video3,video4,video5;
@@ -104,6 +107,15 @@ public class ViewTopicPost extends AppCompatActivity{
 
         image = (CircleImageView) findViewById(R.id.userImage);
         postMoreMenu=findViewById(R.id.post_more_menu);
+        postMoreMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), v);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.post_menu, popup.getMenu());
+                popup.show();
+            }
+        });
         image1=findViewById(R.id.image_preview1);
         image2=findViewById(R.id.image_preview2);
         image3=findViewById(R.id.image_preview3);

@@ -13,12 +13,6 @@
         layout="@layout/top_toolbar_layout"
 
         />
-
-
-
-
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -84,18 +78,21 @@
                         android:text="Post Time"
                         app:layout_constraintStart_toEndOf="@+id/userImage"
                         app:layout_constraintTop_toBottomOf="@+id/userName"
-                        app:menu="@menu/post_menu" />
+                        />
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/post_more_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
+                        android:background="#FFFFFF"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:menu="@menu/bottom_nav_icons"
-                        app:srcCompat="@drawable/ic_baseline_more_horiz_24" />
+                        app:menu="@menu/post_menu"
+                        app:showAsAction="always"
+                        app:srcCompat="@drawable/ic_baseline_more_horiz_24"
+                       />
 
                     <TextView
                         android:id="@+id/postType"
