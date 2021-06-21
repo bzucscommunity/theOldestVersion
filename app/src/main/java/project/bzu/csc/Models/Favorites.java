@@ -1,16 +1,25 @@
 package project.bzu.csc.Models;
 
 public class Favorites {
-
+    private int ID;
     private int postID;
     private int userID;
 
     public Favorites() {
     }
 
-    public Favorites(int postID, int userID) {
+    public Favorites(int ID,int postID, int userID) {
+        this.ID=ID;
         this.postID = postID;
         this.userID = userID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public int getPostID() {
@@ -32,7 +41,8 @@ public class Favorites {
     @Override
     public String toString() {
         return "Favorites{" +
-                "postID=" + postID +
+                "ID=" + ID +
+                ", postID=" + postID +
                 ", userID=" + userID +
                 '}';
     }

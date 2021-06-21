@@ -109,6 +109,12 @@ public class CreatePostFromHome extends AppCompatActivity {
          extractID();
         accountImage = findViewById(R.id.account);
         extractUser();
+        accountImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Favorits.class));
+            }
+        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -94,6 +96,11 @@ public class Favorits extends AppCompatActivity {
         userImage = findViewById(R.id.imageView);
         userName = findViewById(R.id.textView);
         accountImage = findViewById(R.id.account);
+        accountImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+           }
+        });
         posts=new ArrayList<>();
         users=new ArrayList<>();
         favoritesList=new ArrayList<>();
@@ -115,12 +122,14 @@ public class Favorits extends AppCompatActivity {
                     try {
                         JSONObject postObject = response.getJSONObject(i);
                         Favorites favoritePost = new Favorites();
-
+                        favoritePost.setID(postObject.getInt("id"));
                         favoritePost.setPostID(postObject.getInt("postID"));
                         favoritePost.setUserID(postObject.getInt("userID"));
 
 
                         favoritesList.add(favoritePost);
+
+                        Log.d("TAG", "onResponse: "+favoritesList);
 
 
 //                        for (int i2 = 0; i2 < favoritesList.size(); i2++) {

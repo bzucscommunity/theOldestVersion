@@ -96,6 +96,12 @@ public class Home extends AppCompatActivity {
         posts=new ArrayList<>();
         users=new ArrayList<>();
         accountImage = findViewById(R.id.account);
+        accountImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Favorits.class));
+            }
+        });
         sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         userID = sp.getInt("userID" , 0);
         extractUser();

@@ -82,6 +82,12 @@ public class ViewTopicPost extends AppCompatActivity{
         Intent intent = getIntent();
         postID= (int) intent.getExtras().get("postIDFromTopic");
         accountImage = findViewById(R.id.account);
+        accountImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Favorits.class));
+            }
+        });
         sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         userID = sp.getInt("userID" , 0);
         extractUser();

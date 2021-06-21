@@ -63,20 +63,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Time Posted"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/cat_post_type"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/cat_tags"
-                app:layout_constraintTop_toBottomOf="@+id/cat_post_title"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/cat_post_title" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cat_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/cat_post_title">
+                app:layout_constraintStart_toStartOf="@+id/cat_post_title"
+                app:layout_constraintTop_toBottomOf="@+id/cat_post_time">
 
                 <TextView
                     android:id="@+id/cat_tag1"

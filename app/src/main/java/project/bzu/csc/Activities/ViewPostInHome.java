@@ -154,7 +154,12 @@ public class ViewPostInHome extends AppCompatActivity{
         comments=new ArrayList<>();
         IDs=new ArrayList<>();
         accountImage = findViewById(R.id.account);
-
+        accountImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Favorits.class));
+            }
+        });
         extractUser();
         extractPosts();
         extractComments();
