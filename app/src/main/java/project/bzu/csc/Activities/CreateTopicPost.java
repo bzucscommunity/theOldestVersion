@@ -115,6 +115,8 @@ public class CreateTopicPost extends AppCompatActivity {
                 postBody.setText("");
                 textFile.setText("");
                 Toast.makeText(CreateTopicPost.this, "Post Posted!", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getApplicationContext(),TopicCardView.class);
+                startActivity(intent);
 
             }
         });

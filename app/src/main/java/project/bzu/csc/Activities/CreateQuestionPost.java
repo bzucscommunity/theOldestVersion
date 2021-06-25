@@ -115,6 +115,8 @@ public class CreateQuestionPost extends AppCompatActivity {
                 postBody.setText("");
                 textFile.setText("");
                 Toast.makeText(CreateQuestionPost.this, "Post Posted!", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getApplicationContext(),QuestionCardView.class);
+                startActivity(intent);
 
             }
         });

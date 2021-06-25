@@ -129,6 +129,8 @@ public class CreatePostFromHome extends AppCompatActivity {
                 postBody.setText("");
                 textFile.setText("");
                 Toast.makeText(getApplicationContext(), "Post Posted!", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getApplicationContext(),Home.class);
+                startActivity(intent);
             }
         });
 
