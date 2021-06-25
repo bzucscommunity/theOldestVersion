@@ -51,7 +51,6 @@ public class SearchResults extends AppCompatActivity {
     TextView searchText;
     CircleImageView accountImage;
     SharedPreferences sp;
-    User user;
     int userID;
     RecyclerView searchResults;
     SearchResultsAdapter searchAdapter;
@@ -61,7 +60,6 @@ public class SearchResults extends AppCompatActivity {
         context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_results_layout);
-
         BottomNavigationView BttomnavigationView = findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.search);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -118,7 +116,7 @@ public class SearchResults extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(this);
             Log.d("search2", query);
-            String JSON_URL = "http://192.168.1.111:8080/api/searchPosts/" + query;
+            String JSON_URL = "http://192.168.1.111:8080/api/search/" + query;
 
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
@@ -128,21 +126,18 @@ public class SearchResults extends AppCompatActivity {
                         try {
                             JSONObject postObject = response.getJSONObject(i);
                             Post post = new Post();
-                            post.setPostAttachment(postObject.getString("postAttachment").toString());
-                            post.setPostBody(postObject.getString("postBody").toString());
+                            post.setPostAttachment(postObject.getString("postAttachment"));
+                            post.setPostBody(postObject.getString("postBody"));
                             post.setPostID(postObject.getInt("postID"));
-                            post.setPostSubject(postObject.getString("postSubject").toString());
-                            post.setPostTags(postObject.getString("postTags").toString());
-                            post.setPostTitle(postObject.getString("postTitle").toString());
-                            post.setPostType(postObject.getString("postType").toString());
-                            post.setPostAttachment(postObject.getString("postAttachment").toString());
-                            String user1 = postObject.getString("user");
-                            post.setPostTime(postObject.getString("postTime").toString());
-                            ;
-                            Gson g = new Gson();
-                            User user = g.fromJson(user1, User.class);
-                            post.setUser(user);
-
+                            post.setPostSubject(postObject.getString("postSubject"));
+                            post.setPostTags(postObject.getString("postTags"));
+                            post.setPostTitle(postObject.getString("postTitle"));
+                            post.setPostType(postObject.getString("postType"));
+                            post.setPostTime(postObject.getString("postTime"));
+                            post.setUserID(postObject.getInt("userID"));
+                            post.setFirstName(postObject.getString("firstName"));
+                            post.setLastName(postObject.getString("lastName"));
+                            post.setUserImage(postObject.getString("userImage"));
                             posts.add(post);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -164,7 +159,6 @@ public class SearchResults extends AppCompatActivity {
 
     private void extractUser() {
 
-
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
         String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
@@ -173,10 +167,7 @@ public class SearchResults extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -184,12 +175,8 @@ public class SearchResults extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
-                } catch (JSONException e) {
+                        } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

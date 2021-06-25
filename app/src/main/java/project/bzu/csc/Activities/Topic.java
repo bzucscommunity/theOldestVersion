@@ -43,7 +43,6 @@ public class Topic extends AppCompatActivity {
     List<Subject> subjects;
     CircleImageView accountImage;
     SharedPreferences sp;
-    User user;
     int userID;
     private String JSON_URL="http://192.168.1.111:8080/api/subject";
     GridSubjectsListTopicAdapter adapter;
@@ -65,9 +64,6 @@ public class Topic extends AppCompatActivity {
         recyclerView = findViewById(R.id.searchPostsList);
         subjects=new ArrayList<>();
         extractSubject();
-
-
-
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.topic);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -145,10 +141,7 @@ public class Topic extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -156,11 +149,7 @@ public class Topic extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -41,7 +41,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add"
+            android:id="@+id/fab_filter"
             android:layout_width="41dp"
             android:layout_height="74dp"
 

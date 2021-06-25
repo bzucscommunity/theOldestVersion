@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,27 +28,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import project.bzu.csc.Adapters.spinnerAdapter;
 import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
 
 public class CreateQuestionPost extends AppCompatActivity {
-    EditText postSubject, postTitle, postTags, postBody;
+    EditText postTitle, postTags, postBody;
     Button submit;
     TextView subjectNameValue;
-    ArrayList<String> subjectsListSpinner = new ArrayList<>();
-    private spinnerAdapter adapter;
-    private ArrayAdapter<String> subjectSpinnerAdapter;
     TextView textFile;
     Intent intent;
     String name;
     CircleImageView accountImage;
     SharedPreferences sp;
-    User user;
     int userID;
     private static final int PICKFILE_RESULT_CODE = 1;
 
@@ -118,8 +110,6 @@ public class CreateQuestionPost extends AppCompatActivity {
             public void onClick(View v) {
 
                 submitPost();
-
-
                 postTitle.setText("");
                 postTags.setText("");
                 postBody.setText("");
@@ -161,11 +151,8 @@ public class CreateQuestionPost extends AppCompatActivity {
     }
 
     private void submitPost() {
-        String post_url = "http://192.168.1.111:8080/api/post";
+        String post_url = "http://192.168.1.111:8080/api/addPost";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        // postSubject = findViewById(R.id.post_subject);
-
-        //Log.d("TAG", "submitPost: "+name);
         JSONObject postData = new JSONObject();
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -175,9 +162,6 @@ public class CreateQuestionPost extends AppCompatActivity {
 
         try {
             postData.put("postType", "Question");
-            // Log.d("TAG", "submitPost: " + subjectNameValue.getSelectedItem().toString());
-            // postData.put("postSubject",  subjectNameValue.getSelectedItem().toString().trim());
-            //postData.put("post")
             postData.put("postSubject", name);
             postData.put("postTitle", postTitle.getText().toString().trim());
             postData.put("postTags", postTags.getText().toString().trim());
@@ -185,6 +169,7 @@ public class CreateQuestionPost extends AppCompatActivity {
             Log.d("TAG", "submitPost: "+textFile.getText().toString().trim());
             postData.put("postAttachment", textFile.getText().toString().trim());
             postData.put("postTime", strdate);
+            postData.put("userID",userID);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -218,10 +203,7 @@ public class CreateQuestionPost extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -229,11 +211,7 @@ public class CreateQuestionPost extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

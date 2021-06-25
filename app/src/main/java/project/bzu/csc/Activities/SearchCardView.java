@@ -64,11 +64,8 @@ public class SearchCardView extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     TextView categoryText;
     String name;
-    Dialog dialog;
-    String filterBy;
     CircleImageView accountImage;
     SharedPreferences sp;
-    User user;
     int userID;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -78,9 +75,7 @@ public class SearchCardView extends AppCompatActivity {
         Intent intent = getIntent();
         name = intent.getStringExtra("subjectNameFromSearch");
         filtered = intent.getBooleanExtra("filter", false);
-        // filtered = intent.getBooleanExtra("");
         filterTime = intent.getStringExtra("date");
-
         Log.d("TAG", "onCreate: YESS??" + name);
         setContentView(R.layout.recycler_view_search_layout);
         categoryText=findViewById(R.id.categoryText);
@@ -131,18 +126,14 @@ public class SearchCardView extends AppCompatActivity {
         extractUser();
         Log.d("test", "onCreate: hell0");
         extractPosts();
-        FloatingActionButton fab_addNewPost = findViewById(R.id.fab_add);
-        fab_addNewPost.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab_filter = findViewById(R.id.fab_filter);
+        fab_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), MoreMenu.class);
-//                intent.putExtra("subjectName",name);
-//                startActivity(intent);
                 Calendar cal = Calendar.getInstance();
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-
                 DatePickerDialog dialog = new DatePickerDialog(SearchCardView.this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setTitle("Select a Date to filter By");
@@ -154,10 +145,7 @@ public class SearchCardView extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                //Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
-
                 filterTime = day + "-" + month + "-" + year;
-                // mDisplayDate.setText(date);
                 filter();
             }
         };
@@ -182,29 +170,24 @@ public class SearchCardView extends AppCompatActivity {
                     try {
                         JSONObject postObject = response.getJSONObject(i);
                         Post post = new Post();
-
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString()); ;
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
-
-
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
                         posts.add(post);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
                 adapter = new GetCategoriesPostsAdapter(getApplicationContext(),posts);
                 recyclerView.setAdapter(adapter);
             }
@@ -217,13 +200,10 @@ public class SearchCardView extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
 
-
-
-
     public void filter(){
         posts.clear();
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.111:8080/api/filter/"+name+"/"+filterTime;
+        String JSON_URL="http://192.168.1.111:8080/api/filterPosts/"+name+"/"+filterTime;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -233,21 +213,18 @@ public class SearchCardView extends AppCompatActivity {
                     try {
                         JSONObject postObject = response.getJSONObject(i);
                         Post post = new Post();
-
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString()); ;
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
-
-
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
                         posts.add(post);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -267,8 +244,6 @@ public class SearchCardView extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
     private void extractUser() {
-
-
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
         String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
@@ -277,10 +252,7 @@ public class SearchCardView extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -288,10 +260,7 @@ public class SearchCardView extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
 
                 } catch (JSONException e) {
                     e.printStackTrace();

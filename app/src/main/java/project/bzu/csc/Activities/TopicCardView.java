@@ -49,7 +49,6 @@ public class TopicCardView extends AppCompatActivity {
     GetTopicPostsAdapter adapter;
     CircleImageView accountImage;
     SharedPreferences sp;
-    User user;
     int userID;
     String name;
     TextView subjectText;
@@ -107,13 +106,7 @@ public class TopicCardView extends AppCompatActivity {
         sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         userID = sp.getInt("userID" , 0);
         extractUser();
-
-
         extractPosts();
-
-
-
-
         FloatingActionButton fab_addNewPost = findViewById(R.id.fab_add);
         fab_addNewPost.setOnClickListener(new View.OnClickListener(){
                                               @Override
@@ -131,7 +124,7 @@ public class TopicCardView extends AppCompatActivity {
 
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.111:8080/api/typeSubject/Topic/"+name;
+        String JSON_URL="http://192.168.1.111:8080/api/Topic/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -141,23 +134,18 @@ public class TopicCardView extends AppCompatActivity {
                     try {
                         JSONObject postObject = response.getJSONObject(i);
                         Post post = new Post();
-
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString()); ;
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
-                        Log.d("post11",post.toString());
-
-
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
                         posts.add(post);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -188,10 +176,7 @@ public class TopicCardView extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -199,12 +184,8 @@ public class TopicCardView extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
-                } catch (JSONException e) {
+                      } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

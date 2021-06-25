@@ -69,7 +69,6 @@ public class Question extends AppCompatActivity {
         subjects = new ArrayList<>();
         extractSubject();
 
-
         BottomNavigationView BttomnavigationView =findViewById(R.id.bottomNavigationView);
         BttomnavigationView.setSelectedItemId(R.id.question);
         BttomnavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -114,7 +113,6 @@ public class Question extends AppCompatActivity {
                     try {
                         JSONObject subjectObject = response.getJSONObject(i);
                         Subject subject = new Subject();
-
                         subject.setName(subjectObject.getString("name").toString());
                         subject.setImageURL(subjectObject.getString("image"));
 
@@ -124,7 +122,6 @@ public class Question extends AppCompatActivity {
                     }
                 }
                 recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false));
-
                 adapter = new GridSubjectsListQuestionAdapter(getApplicationContext(),subjects);
                 recyclerView.setAdapter(adapter);
             }
@@ -148,10 +145,7 @@ public class Question extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -159,11 +153,7 @@ public class Question extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

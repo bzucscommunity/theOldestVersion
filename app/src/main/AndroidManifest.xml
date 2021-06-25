@@ -23,7 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MoreMenu"/>
         <activity android:name=".Activities.Question"/>
         <activity android:name=".Activities.QuestionCardView"/>
         <activity android:name=".Activities.Search"/>

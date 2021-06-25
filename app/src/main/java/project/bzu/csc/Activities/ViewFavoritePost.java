@@ -72,15 +72,9 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
     int userID;
     public static Context context;
     ImageButton postMoreMenu;
-
-
-    VideoView video1,video2,video3,video4,video5;
+    VideoView video1,video2;
     ConstraintLayout tags,imagesPreviews,videosPreviews;
-    String videoPath;
-
     int postID;
-
-    User user = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +93,6 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
         tag3=findViewById(R.id.tag3);
         tag4=findViewById(R.id.tag4);
         tag5=findViewById(R.id.tag5);
-
 
         image = (CircleImageView) findViewById(R.id.userImage);
         postMoreMenu=findViewById(R.id.post_more_menu);
@@ -126,16 +119,7 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
         videosPreviews=findViewById(R.id.videos_previews);
         PostClickView=findViewById(R.id.Postclick);
         recyclerView=findViewById(R.id.recyclerView);
-//        videoPath="android.resource://"+getPackageName()+"/" +R.raw.video1;
-//        Uri uri = Uri.parse(videoPath);
-//        video1.setVideoURI(uri);
-//
-//
-//        MediaController mc = new MediaController(this);
-//        video1.setMediaController(mc);
-//        mc.setAnchorView(video1);
-//        videosPreviews.setVisibility(View.VISIBLE);
-//        video1.setVisibility(View.VISIBLE);
+
         context=this;
         accountImage = findViewById(R.id.account);
         accountImage.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +192,7 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
         int postID= (int) intent.getExtras().get("postIDFromFavorite");
-        String JSON_URL="http://192.168.1.111:8080/api/getPost/"+postID;
+        String JSON_URL="http://192.168.1.111:8080/api/getPostByID/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -218,23 +202,20 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
                         JSONObject postObject = response.getJSONObject(i);
                         Post post = new Post();
 
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString());
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
-
-
-                        Picasso.get().load(post.getUser().getUserImage()).into(image);
-                        userName.setText(post.getUser().getUserName());
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
+                        Picasso.get().load(post.getUserImage()).into(image);
+                        userName.setText(post.getUserName());
                         if(post.getPostType().equals("Question")){
                             postType.setText("Q");}
                         else if(post.getPostType().equals("Topic")){
@@ -288,8 +269,6 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
 
                         }
                         String imagesString=post.getPostAttachment();
-                        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
-
 
                         if(imagesString==""){
                             imagesPreviews.setVisibility(View.GONE);
@@ -301,10 +280,7 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
                         }
                         else if(!(imagesString=="")){
                             String[] imagesArray=imagesString.split(",");
-                            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
 
-                            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
-                            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
                             if(imagesArray.length==1){
                                 Picasso.get().load(imagesArray[0]).into(image1);
                                 imagesPreviews.setVisibility(View.VISIBLE);
@@ -348,7 +324,7 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
                                 image5.setVisibility(View.VISIBLE);
                             }
                         }
-                        if(post.getUser().getUserID()==userID){
+                        if(post.getUserID()==userID){
                             postMoreMenu.setVisibility(View.VISIBLE);
                         }else{
                             postMoreMenu.setVisibility(View.GONE);

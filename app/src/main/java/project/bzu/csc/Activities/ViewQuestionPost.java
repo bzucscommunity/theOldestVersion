@@ -217,23 +217,22 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
                         JSONObject postObject = response.getJSONObject(i);
                         Post post = new Post();
 
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString());
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
 
 
-                        Picasso.get().load(post.getUser().getUserImage()).into(image);
-                        userName.setText(post.getUser().getUserName());
+                        Picasso.get().load(post.getUserImage()).into(image);
+                        userName.setText(post.getUserName());
                         if(post.getPostType().equals("Question")){
                             postType.setText("Q");}
                         else if(post.getPostType().equals("Topic")){
@@ -287,8 +286,6 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
 
                         }
                         String imagesString=post.getPostAttachment();
-                        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
-
 
                         if(imagesString==""){
                             imagesPreviews.setVisibility(View.GONE);
@@ -300,10 +297,6 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
                         }
                         else if(!(imagesString=="")){
                             String[] imagesArray=imagesString.split(",");
-                            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
-
-                            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
-                            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
                             if(imagesArray.length==1){
                                 Picasso.get().load(imagesArray[0]).into(image1);
                                 imagesPreviews.setVisibility(View.VISIBLE);
@@ -347,7 +340,7 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
                                 image5.setVisibility(View.VISIBLE);
                             }
                         }
-                        if(post.getUser().getUserID()==userID){
+                        if(post.getUserID()==userID){
                             postMoreMenu.setVisibility(View.VISIBLE);
                         }else{
                             postMoreMenu.setVisibility(View.GONE);
@@ -472,10 +465,7 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -483,12 +473,8 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
                     users.add(user);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

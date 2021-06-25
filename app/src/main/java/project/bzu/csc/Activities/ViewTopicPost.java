@@ -61,7 +61,7 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
     List<Post> posts;
     List<User> users;
     List<Comment> comments;
-    TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares,PostClickView;
+    TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,PostClickView;
     ImageView image1,image2,image3,image4,image5;
     CircleImageView image;
     EditText commentsText;
@@ -73,10 +73,10 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
     ImageButton postMoreMenu;
     int userID;
 
-    VideoView video1,video2,video3,video4,video5;
+    VideoView video1,video2;
     ConstraintLayout tags,imagesPreviews,videosPreviews;
     int postID;
-    User user = new User();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,7 +193,7 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
         int postID= (int) intent.getExtras().get("postIDFromTopic");
-        String JSON_URL="http://192.168.1.111:8080/api/getPost/"+postID;
+        String JSON_URL="http://192.168.1.111:8080/api/getPostByID/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -203,23 +203,22 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
                         JSONObject postObject = response.getJSONObject(i);
                         Post post = new Post();
 
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString());
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
 
 
-                        Picasso.get().load(post.getUser().getUserImage()).into(image);
-                        userName.setText(post.getUser().getUserName());
+                        Picasso.get().load(post.getUserImage()).into(image);
+                        userName.setText(post.getUserName());
                         if(post.getPostType().equals("Question")){
                             postType.setText("Q");}
                         else if(post.getPostType().equals("Topic")){
@@ -273,7 +272,7 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
 
                         }
                         String imagesString=post.getPostAttachment();
-                        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
+
 
 
                         if(imagesString==""){
@@ -286,10 +285,7 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
                         }
                         else if(!(imagesString=="")){
                             String[] imagesArray=imagesString.split(",");
-                            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
 
-                            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
-                            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
                             if(imagesArray.length==1){
                                 Picasso.get().load(imagesArray[0]).into(image1);
                                 imagesPreviews.setVisibility(View.VISIBLE);
@@ -358,7 +354,7 @@ public class ViewTopicPost extends AppCompatActivity implements PopupMenu.OnMenu
                             videosPreviews.setVisibility(View.VISIBLE);
                             video1.setVisibility(View.VISIBLE);
                         }
-                        if(post.getUser().getUserID()==userID){
+                        if(post.getUserID()==userID){
                             postMoreMenu.setVisibility(View.VISIBLE);
                         }else{
                             postMoreMenu.setVisibility(View.GONE);

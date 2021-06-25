@@ -77,7 +77,7 @@ public class GetFavoritePostsAdapter extends RecyclerView.Adapter<GetFavoritePos
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
 
-        holder.userName.setText(posts.get(position).getUser().getUserName());
+        holder.userName.setText(posts.get(position).getUserName());
 
         if(posts.get(position).getPostType().equals("Question")){
             holder.postType.setText("Q");}
@@ -135,16 +135,12 @@ public class GetFavoritePostsAdapter extends RecyclerView.Adapter<GetFavoritePos
             holder.tags.setVisibility(View.GONE);
         }
         String imagesString=posts.get(position).getPostAttachment();
-        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
+
 
 
         if(imagesString.length() >5){
             Log.d("TAG", "onBindViewHolder: hi");
             imagesArray=imagesString.split(",");
-            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
-
-            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
-            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
             if(imagesArray.length==1){
                 Picasso.get().load(imagesArray[0]).into(holder.image1);
                 holder.imagesPreviews.setVisibility(View.VISIBLE);
@@ -200,26 +196,10 @@ public class GetFavoritePostsAdapter extends RecyclerView.Adapter<GetFavoritePos
         if(flag .equalsIgnoreCase("Dijkstra’s Shortest Path Algorithm")||flag.equalsIgnoreCase("Data structures")){
             Picasso.get().load("https://cdn.icon-icons.com/icons2/792/PNG/512/YOUTUBE_icon-icons.com_65537.png").into(holder.image2);
             holder.imagesPreviews.setVisibility(View.VISIBLE);
-            holder.image2.setVisibility(View.VISIBLE);}
-
-        /*String videosString=posts.get(position).getPostTags();
-        String[] videosArray=videosString.split(",");
-        if(videosArray.length==1){
-            Picasso.get().load(videosArray[0]).into(holder.video1);
-            Picasso.get().load(imagesArray[1]).into(holder.image2);
-            holder.tag1.setVisibility(View.VISIBLE);
-            holder.tags.setVisibility(View.VISIBLE);
-        }else if(videosArray.length==2){
-            Picasso.get().load(videosArray[0]).into(holder.video1);
-            Picasso.get().load(videosArray[1]).into(holder.video2);
-            holder.tag1.setVisibility(View.VISIBLE);
-            holder.tag2.setVisibility(View.VISIBLE);
-            holder.tags.setVisibility(View.VISIBLE);
-        }*/
+            holder.image2.setVisibility(View.VISIBLE);
+        }
         holder.postTime.setText(calculateTimeAgo(posts.get(position).getPostTime()));
-        //holder.postTime.setText("hello");
-
-        Picasso.get().load(posts.get(position).getUser().getUserImage()).into(holder.image);
+        Picasso.get().load(posts.get(position).getUserImage()).into(holder.image);
 
         holder.cardView.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -36,7 +36,6 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
 
     LayoutInflater inflater;
     List<Post> posts;
-    List<User> users;
     Context context;
     String[] imagesArray;
 
@@ -75,14 +74,13 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
 
-        holder.userName.setText(posts.get(position).getUser().getUserName());
+        holder.userName.setText(posts.get(position).getUserName());
 
         if(posts.get(position).getPostType().equals("Question")){
             holder.postType.setText("Q");}
         else if(posts.get(position).getPostType().equals("Topic")){
-
-            holder.postType.setText("T");}
-
+            holder.postType.setText("T");
+        }
         holder.postTitle.setText(posts.get(position).getPostTitle());
         holder.postContent.setText(posts.get(position).getPostBody());
         String tagsString=posts.get(position).getPostTags();
@@ -134,17 +132,10 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
             holder.tags.setVisibility(View.GONE);
         }
         String imagesString=posts.get(position).getPostAttachment();
-        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
-
-
         Log.d("TAG", "onBindViewHolder: "+imagesString.length());
         if(imagesString.length() >5){
             Log.d("TAG", "onBindViewHolder: hi");
              imagesArray=imagesString.split(",");
-            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
-
-            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
-            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
             if(imagesArray.length==1){
                 Picasso.get().load(imagesArray[0]).into(holder.image1);
                 holder.imagesPreviews.setVisibility(View.VISIBLE);
@@ -201,25 +192,8 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
             Picasso.get().load("https://cdn.icon-icons.com/icons2/792/PNG/512/YOUTUBE_icon-icons.com_65537.png").into(holder.image2);
             holder.imagesPreviews.setVisibility(View.VISIBLE);
             holder.image2.setVisibility(View.VISIBLE);}
-//        String videosString=posts.get(position).getPostTags();
-//        String[] videosArray=videosString.split(",");
-//        if(videosArray.length==1){
-//            Picasso.get().load(videosArray[0]).into((Target) holder.video1);
-//            Picasso.get().load(imagesArray[1]).into(holder.image2);
-//            holder.tag1.setVisibility(View.VISIBLE);
-//            holder.tags.setVisibility(View.VISIBLE);
-//        }else if(videosArray.length==2){
-//            Picasso.get().load(videosArray[0]).into( holder.video1);
-//            Picasso.get().load(videosArray[1]).into( holder.video2);
-//            holder.video1.setVisibility(View.VISIBLE);
-//            holder.video2.setVisibility(View.VISIBLE);
-//          //  holder.tags.setVisibility(View.VISIBLE);
-//        }
         holder.postTime.setText(calculateTimeAgo(posts.get(position).getPostTime()));
-        //holder.postTime.setText("hello");
-
-        Picasso.get().load(posts.get(position).getUser().getUserImage()).into(holder.image);
-
+        Picasso.get().load(posts.get(position).getUserImage()).into(holder.image);
         holder.cardView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -229,10 +203,6 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
                 context.startActivity(intent);
             }
         });
-
-
-
-
     }
 
     @Override
@@ -241,11 +211,8 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5,postViews,postComments,postShares;
+        TextView userName,postTime,postType,postTitle,postContent,tag1,tag2,tag3,tag4,tag5;
         ImageView postMoreMenu,image1,image2,image3,image4,image5,image;
-        //  CircleImageView image;
-
-
         VideoView video1,video2;
         ConstraintLayout tags,imagesPreviews,videosPreviews;
         CardView cardView;

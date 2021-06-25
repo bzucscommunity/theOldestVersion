@@ -55,13 +55,8 @@ public class Search extends AppCompatActivity {
     GetCategoriesAdapter adapter;
     CircleImageView accountImage;
     SharedPreferences sp;
-    User user;
     int userID;
-
-    RecyclerView searchResults;
-    SearchResultsAdapter searchAdapter;
     private String JSON_URL="http://192.168.1.111:8080/api/subject";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,55 +119,18 @@ public class Search extends AppCompatActivity {
                 Intent intent = new Intent(context, SearchResults.class);
                 intent.putExtra("query",query);
                 context.startActivity(intent);
-
-
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
 
-
-
-                //    if(TextUtils.isEmpty(newText)){
-                //      adapter.filter("");
-                //recyclerView.clea
-
-                //   }
-                //    else{
-                //       adapter.filter(newText);
-                //    }
-
-                //    return true;
                 return false;
 
             }
         });
     }
 
-    private void filter(String text) {
-        // creating a new array list to filter our data.
-        ArrayList<Post> filteredlist = new ArrayList<>();
-
-        // running a for loop to compare elements.
-        for (Post item : posts) {
-            // checking if the entered string matched with any item of our recycler view.
-            if (item.getPostTitle().toLowerCase().contains(text.toLowerCase())) {
-                // if the item is matched we are
-                // adding it to our filtered list.
-                filteredlist.add(item);
-            }
-        }
-        if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
-            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
-        } else {
-            // at last we are passing that filtered
-            // list to our adapter class.
-          //  adapter.filterList(filteredlist);
-        }
-    }
 
     private void extractCategories() {
 
@@ -195,7 +153,6 @@ public class Search extends AppCompatActivity {
                     }
                 }
                 browseCategories.setLayoutManager(new GridLayoutManager(getApplicationContext(),1,GridLayoutManager.VERTICAL,false));
-
                 adapter = new GetCategoriesAdapter(getApplicationContext(),subjects);
                 browseCategories.setAdapter(adapter);
             }
@@ -209,8 +166,6 @@ public class Search extends AppCompatActivity {
     }
 
     private void extractUser() {
-
-
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
         String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
@@ -219,10 +174,7 @@ public class Search extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-
                     User user=new User();
-
                     user.setUserID(response.getInt("userID"));
                     user.setEmail(response.getString("email").toString());
                     user.setUserType(response.getString("userType").toString());
@@ -230,11 +182,7 @@ public class Search extends AppCompatActivity {
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

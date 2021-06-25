@@ -224,23 +224,22 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                         post = new Post();
 
 
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        post.setPostBody(postObject.getString("postBody").toString());
+                        post.setPostAttachment(postObject.getString("postAttachment"));
+                        post.setPostBody(postObject.getString("postBody"));
                         post.setPostID(postObject.getInt("postID"));
-                        post.setPostSubject(postObject.getString("postSubject").toString());
-                        post.setPostTags(postObject.getString("postTags").toString());
-                        post.setPostTitle(postObject.getString("postTitle").toString());
-                        post.setPostType(postObject.getString("postType").toString());
-                        post.setPostAttachment(postObject.getString("postAttachment").toString());
-                        String user1=  postObject.getString("user");
-                        post.setPostTime(postObject.getString("postTime").toString());
-                        Gson g = new Gson();
-                        User user = g.fromJson(user1, User.class);
-                        post.setUser(user);
+                        post.setPostSubject(postObject.getString("postSubject"));
+                        post.setPostTags(postObject.getString("postTags"));
+                        post.setPostTitle(postObject.getString("postTitle"));
+                        post.setPostType(postObject.getString("postType"));
+                        post.setPostTime(postObject.getString("postTime"));
+                        post.setUserID(postObject.getInt("userID"));
+                        post.setFirstName(postObject.getString("firstName"));
+                        post.setLastName(postObject.getString("lastName"));
+                        post.setUserImage(postObject.getString("userImage"));
 
 
-                        Picasso.get().load(post.getUser().getUserImage()).into(image);
-                        userName.setText(post.getUser().getUserName());
+                        Picasso.get().load(post.getUserImage()).into(image);
+                        userName.setText(post.getUserName());
                         if(post.getPostType().equals("Question")){
                             postType.setText("Q");}
                         else if(post.getPostType().equals("Topic")){
@@ -294,8 +293,6 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
 
                         }
                         String imagesString=post.getPostAttachment();
-                        //Log.d("TAG", "onBindViewHolder: YES"+ imagesString);
-
 
                         if(imagesString.length()==0){
                             imagesPreviews.setVisibility(View.GONE);
@@ -307,10 +304,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                         }
                         else if(!(imagesString=="")){
                             String[] imagesArray=imagesString.split(",");
-                            //Log.d("TAG", "onBindViewHolder:4 "+ imagesString);
 
-                            //Log.d("TAG", "onBindViewHolder2: "+ Arrays.toString(imagesArray));
-                            //Log.d("TAG", "onBindViewHolder3: "+imagesArray.length);
                             if(imagesArray.length==1){
                                 Picasso.get().load(imagesArray[0]).into(image1);
                                 imagesPreviews.setVisibility(View.VISIBLE);
@@ -379,7 +373,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                             videosPreviews.setVisibility(View.VISIBLE);
                             video1.setVisibility(View.VISIBLE);
                         }
-                        if(post.getUser().getUserID()==userID){
+                        if(post.getUserID()==userID){
                             postMoreMenu.setVisibility(View.VISIBLE);
                         }else{
                             postMoreMenu.setVisibility(View.GONE);
@@ -550,12 +544,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                     user.setLastName(response.getString("lastName").toString());
                     user.setUserPassword(response.getString("userPassword").toString());
                     user.setUserImage((response.getString("userImage").toString()));
-
                     Picasso.get().load(user.getUserImage()).into(accountImage);
-
-                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-                    // Log.d("userName",user.getFirstName());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -574,53 +563,6 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
 
     }
 
-
-//    public User extractUsersForComments(int userID){
-//        RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
-//
-//        String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
-//
-//        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-//
-//                try {
-//
-//
-//
-//
-//                    user2.setUserID(response.getInt("userID"));
-//                    user2.setEmail(response.getString("email").toString());
-//                    user2.setUserType(response.getString("userType").toString());
-//                    user2.setFirstName(response.getString("firstName").toString());
-//                    user2.setLastName(response.getString("lastName").toString());
-//                    user2.setUserPassword(response.getString("userPassword").toString());
-//                    user2.setUserImage((response.getString("userImage").toString()));
-//                     Log.d("user2",user2.toString());
-//
-//                    //  userName.setText(user.getFirstName()+" "+user.getLastName());
-//                    // Log.d("userName",user.getFirstName());
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//
-//        }, new Response.ErrorListener(){
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
-//            }
-//        });
-//        queue2.add(jsonObjReq);
-//
-//return user2;
-//
-//
-//    }
-//
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {

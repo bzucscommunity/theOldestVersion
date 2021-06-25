@@ -54,7 +54,6 @@ public class Favorits extends AppCompatActivity {
     CircleImageView accountImage;
     ImageView userImage;
     SharedPreferences sp;
-    User user;
     int userID;
     public static Context context;
     @Override
@@ -136,7 +135,7 @@ public class Favorits extends AppCompatActivity {
 //                        for (int i2 = 0; i2 < favoritesList.size(); i2++) {
                             int postID = favoritesList.get(i).getPostID();
                             Log.d("postIDInFav", String.valueOf(favoritesList.size()));
-                            String JSON_URL2 = "http://192.168.1.111:8080/api/getPost/" + postID;
+                            String JSON_URL2 = "http://192.168.1.111:8080/api/getPostByID/" + postID;
                             RequestQueue queue1 = Volley.newRequestQueue(getApplicationContext());
                             JsonArrayRequest jsonArrayRequest2 = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
 
@@ -146,25 +145,19 @@ public class Favorits extends AppCompatActivity {
                                         try {
                                             JSONObject postObject = response.getJSONObject(i);
                                             Post post = new Post();
-
-
-                                            post.setPostAttachment(postObject.getString("postAttachment").toString());
-                                            post.setPostBody(postObject.getString("postBody").toString());
+                                            post.setPostAttachment(postObject.getString("postAttachment"));
+                                            post.setPostBody(postObject.getString("postBody"));
                                             post.setPostID(postObject.getInt("postID"));
-                                            post.setPostSubject(postObject.getString("postSubject").toString());
-                                            post.setPostTags(postObject.getString("postTags").toString());
-                                            post.setPostTitle(postObject.getString("postTitle").toString());
-                                            post.setPostType(postObject.getString("postType").toString());
-                                            String user1 = postObject.getString("user");
-                                            post.setPostTime(postObject.getString("postTime").toString());
-                                            ;
-                                            Gson g = new Gson();
-                                            User user = g.fromJson(user1, User.class);
-
-                                            post.setUser(user);
+                                            post.setPostSubject(postObject.getString("postSubject"));
+                                            post.setPostTags(postObject.getString("postTags"));
+                                            post.setPostTitle(postObject.getString("postTitle"));
+                                            post.setPostType(postObject.getString("postType"));
+                                            post.setPostTime(postObject.getString("postTime"));
+                                            post.setUserID(postObject.getInt("userID"));
+                                            post.setFirstName(postObject.getString("firstName"));
+                                            post.setLastName(postObject.getString("lastName"));
+                                            post.setUserImage(postObject.getString("userImage"));
                                             Log.d("postInFav", post.toString());
-
-
                                             posts.add(post);
 
                                         } catch (JSONException e) {
@@ -172,7 +165,6 @@ public class Favorits extends AppCompatActivity {
                                         }
                                     }
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
                                     adapter = new GetFavoritePostsAdapter(getApplicationContext(), posts);
                                     recyclerView.setAdapter(adapter);
                                 }
@@ -214,7 +206,6 @@ public class Favorits extends AppCompatActivity {
 
 
                                  User user=new User();
-
                                     user.setUserID(response.getInt("userID"));
                                     user.setEmail(response.getString("email").toString());
                                     user.setUserType(response.getString("userType").toString());
@@ -222,11 +213,9 @@ public class Favorits extends AppCompatActivity {
                                     user.setLastName(response.getString("lastName").toString());
                                     user.setUserPassword(response.getString("userPassword").toString());
                                     user.setUserImage((response.getString("userImage").toString()));
-
                                     Picasso.get().load(user.getUserImage()).into(userImage);
                                     Picasso.get().load(user.getUserImage()).into(accountImage);
                                     userName.setText(user.getFirstName()+" "+user.getLastName());
-                                  // Log.d("userName",user.getFirstName());
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

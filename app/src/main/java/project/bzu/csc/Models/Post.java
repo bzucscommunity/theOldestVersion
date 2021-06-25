@@ -11,20 +11,17 @@ public class Post {
     private String postTags;
     private String postBody;
     private String postAttachment;
-
-    private User user;
     private String postTime;
-
-
-
+    private int userID;
+    private String firstName;
+    private String lastName;
+    private String userImage;
 
     public Post() {
         super();
     }
 
-    public Post(int postID, String postType, String postSubject, String postTitle, String postTags,
-                String postBody, String postAttachment,String postTime,User user) {
-        super();
+    public Post(int postID, String postType, String postSubject, String postTitle, String postTags, String postBody, String postAttachment, String postTime, int userID, String firstName, String lastName, String userImage) {
         this.postID = postID;
         this.postType = postType;
         this.postSubject = postSubject;
@@ -32,8 +29,11 @@ public class Post {
         this.postTags = postTags;
         this.postBody = postBody;
         this.postAttachment = postAttachment;
-        this.user = user;
-        this.postTime=postTime;
+        this.postTime = postTime;
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userImage = userImage;
     }
 
     public int getPostID() {
@@ -92,13 +92,6 @@ public class Post {
         this.postAttachment = postAttachment;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
     public String getPostTime() {
         return postTime;
     }
@@ -107,6 +100,40 @@ public class Post {
         this.postTime = postTime;
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
+    public String getUserName(){
+        return getFirstName() + " " + getLastName();
+    }
     @Override
     public String toString() {
         return "Post{" +
@@ -117,8 +144,11 @@ public class Post {
                 ", postTags='" + postTags + '\'' +
                 ", postBody='" + postBody + '\'' +
                 ", postAttachment='" + postAttachment + '\'' +
-                ", postTime='" + postTime+ '\'' +
-                ", user=" + user +
+                ", postTime='" + postTime + '\'' +
+                ", userID=" + userID +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userImage='" + userImage + '\'' +
                 '}';
     }
 }
