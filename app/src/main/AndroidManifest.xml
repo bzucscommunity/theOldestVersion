@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="project.bzu.csc">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo2"
+        android:label="CS Community"
         android:roundIcon="@drawable/logo2"
         android:supportsRtl="true"
         android:theme="@style/Theme.Csc"
-        android:usesCleartextTraffic="true"
-        android:label="CS Community"
-        >
-
-        <activity android:name=".Activities.CreatePostFromHome"/>
-        <activity android:name=".Activities.CreateQuestionPost"/>
-        <activity android:name=".Activities.CreateTopicPost"/>
-        <activity android:name=".Activities.Favorits"/>
-        <activity android:name=".Activities.Home"/>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.EditPost"></activity>
+        <activity android:name=".Activities.CreatePostFromHome" />
+        <activity android:name=".Activities.CreateQuestionPost" />
+        <activity android:name=".Activities.CreateTopicPost" />
+        <activity android:name=".Activities.Favorits" />
+        <activity android:name=".Activities.Home" />
         <activity android:name=".Activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.Question"/>
-        <activity android:name=".Activities.QuestionCardView"/>
-        <activity android:name=".Activities.Search"/>
-        <activity android:name=".Activities.SearchCardView"/>
-        <activity android:name=".Activities.SearchResults"/>
-        <activity android:name=".Activities.Topic"/>
-        <activity android:name=".Activities.TopicCardView"/>
-        <activity android:name=".Activities.ViewFavoritePost"/>
-        <activity android:name=".Activities.ViewPostInHome"/>
-        <activity android:name=".Activities.ViewQuestionPost"/>
-        <activity android:name=".Activities.ViewSearchPost"/>
-        <activity android:name=".Activities.ViewTopicPost"/>
-
-
-
-
+        <activity android:name=".Activities.Question" />
+        <activity android:name=".Activities.QuestionCardView" />
+        <activity android:name=".Activities.Search" />
+        <activity android:name=".Activities.SearchCardView" />
+        <activity android:name=".Activities.SearchResults" />
+        <activity android:name=".Activities.Topic" />
+        <activity android:name=".Activities.TopicCardView" />
+        <activity android:name=".Activities.ViewFavoritePost" />
+        <activity android:name=".Activities.ViewPostInHome" />
+        <activity android:name=".Activities.ViewQuestionPost" />
+        <activity android:name=".Activities.ViewSearchPost" />
+        <activity android:name=".Activities.ViewTopicPost" />
     </application>
+
 </manifest>

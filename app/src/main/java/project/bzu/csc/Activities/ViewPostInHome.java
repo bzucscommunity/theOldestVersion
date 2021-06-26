@@ -196,13 +196,18 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
-                    addToFavorites();
+                    if(favorite.equals(R.drawable.ic_baseline_favorite_24)) {
+                        removeFromFavorites();
+                        Toast.makeText(ViewPostInHome.this, "Removed from Favorites!", Toast.LENGTH_LONG).show();
+                    }else if(favorite.equals(R.drawable.ic_baseline_favorite_border_24)){
+                        addToFavorites();
+                        Toast.makeText(ViewPostInHome.this, "Added to Favorites!", Toast.LENGTH_LONG).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(ViewPostInHome.this, "Added to Favorites", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -213,7 +218,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         RequestQueue queue= Volley.newRequestQueue(this);
         Intent intent = getIntent();
         int postID= (int) intent.getExtras().get("postID");
-        String JSON_URL="http://192.168.1.111:8080/api/getPost/"+postID;
+        String JSON_URL="http://192.168.1.111:8080/api/getPostByID/"+postID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -494,17 +499,12 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         JSONObject postData = new JSONObject();
 
 
-
         try {
             postData.put("userID", userID);
             postData.put("postID",postID);
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
             @Override
@@ -520,11 +520,32 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         });
 
         requestQueue.add(jsonObjectRequest);
-        ((ImageButton) favorite).setImageResource(R.drawable.ic_baseline_favorite_24);
+        favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+
+    }
+    private void removeFromFavorites(){
+        favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL3="http://192.168.1.109:8080/api/deletePostID/" + postID;
+        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("deleteAPi","worked" + postID);
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue3.add(jsonObjReq2);
 
     }
     private void extractUser() {
-
 
         RequestQueue queue2= Volley.newRequestQueue(getApplicationContext());
         String JSON_URL2="http://192.168.1.111:8080/api/" + userID;
@@ -569,10 +590,15 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_post:
-                editPost();
+                Intent intent=new Intent(this,EditPost.class);
+                intent.putExtra("postID",postID);
+                startActivity(intent);
                 return true;
             case R.id.delete_post:
                 deletePost();
+                Toast.makeText(ViewPostInHome.this, "Post Deleted!", Toast.LENGTH_SHORT).show();
+                intent=new Intent(this,Home.class);
+                startActivity(intent);
                 return true;
             default:
                 return false;
@@ -580,11 +606,26 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
     }
 
     private void deletePost() {
+        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL3="http://192.168.1.111:8080/api/deletePostID/" + postID;
+        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
 
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("deleteAPi","worked" + postID);
+            }
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue3.add(jsonObjReq2);
     }
 
     private void editPost() {
-
     }
 
 
