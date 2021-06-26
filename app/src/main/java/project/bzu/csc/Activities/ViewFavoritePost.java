@@ -72,9 +72,12 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
     int userID;
     public static Context context;
     ImageButton postMoreMenu;
+    ImageButton isFavored;
     VideoView video1,video2;
     ConstraintLayout tags,imagesPreviews,videosPreviews;
     int postID;
+    private MenuItem item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +165,16 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
                 return false;
             }
         });
+        isFavored=findViewById(R.id.fav);
+        isFavored.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                remove();
+                Toast.makeText(ViewFavoritePost.this, "Removed from Favorites", Toast.LENGTH_LONG).show();
+            }
+        });
+        isFavored.setImageResource(R.drawable.ic_baseline_favorite_24);
 
         posts=new ArrayList<>();
         users = new ArrayList<>();
@@ -501,6 +514,32 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
     }
 
     private void editPost() {
+
+    }
+
+
+
+
+    private void remove(){
+        isFavored.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL3="http://192.168.1.109:8080/api/deletePostID/" + postID;
+        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("deleteAPi","worked" + postID);
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue3.add(jsonObjReq2);
 
     }
 

@@ -520,6 +520,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         });
 
         requestQueue.add(jsonObjectRequest);
+        ((ImageButton) favorite).setImageResource(R.drawable.ic_baseline_favorite_24);
 
     }
     private void extractUser() {

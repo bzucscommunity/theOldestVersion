@@ -72,7 +72,7 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
     int userID;
     public static Context context;
     ImageButton postMoreMenu;
-
+    ImageButton favorite;
 
     VideoView video1,video2,video3,video4,video5;
     ConstraintLayout tags,imagesPreviews,videosPreviews;
@@ -99,6 +99,8 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
         tag3=findViewById(R.id.tag3);
         tag4=findViewById(R.id.tag4);
         tag5=findViewById(R.id.tag5);
+        favorite=findViewById(R.id.fav);
+
 
 
         image = (CircleImageView) findViewById(R.id.userImage);
@@ -199,6 +201,20 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
                 Toast.makeText(ViewQuestionPost.this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
+
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    addToFavorites();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(ViewQuestionPost.this, "Added to Favorites", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
 
 //
@@ -491,6 +507,43 @@ public class ViewQuestionPost extends AppCompatActivity implements PopupMenu.OnM
 
 
         ;
+    }
+
+    private void addToFavorites() throws JSONException {
+
+        String post_url = "http://192.168.1.111:8080/api/addTofavorites";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject postData = new JSONObject();
+
+
+
+        try {
+            postData.put("userID", userID);
+            postData.put("postID",postID);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("tag", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d("tag", "onErrorResponse:ERROR");
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+        ((ImageButton) favorite).setImageResource(R.drawable.ic_baseline_favorite_24);
+
     }
     @Override
     public boolean onMenuItemClick(MenuItem item) {
