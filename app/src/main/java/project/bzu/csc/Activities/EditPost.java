@@ -18,10 +18,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -34,9 +38,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Models.Post;
@@ -131,12 +138,6 @@ public class EditPost extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                postTypeSpinner.setSelection(0);
-                subjectNameSpinner.setSelection(0);
-                postTitle.setText("");
-                postTags.setText("");
-                postBody.setText("");
-                textFile.setText("");
                 Toast.makeText(getApplicationContext(), "Changes Saved!", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(getApplicationContext(),Home.class);
                 startActivity(intent);
@@ -168,28 +169,32 @@ public class EditPost extends AppCompatActivity {
                         post.setLastName(postObject.getString("lastName"));
                         post.setUserImage(postObject.getString("userImage"));
                         postBody.setText(post.getPostBody());
-                        if(post.getPostType()=="Q"){
+                        Log.d("TAG", "onResponse:ssss "+post.getPostSubject());
+
+                        if(post.getPostType().equals("Question")){
                             postTypeSpinner.setSelection(1);
                         }
-                        if(post.getPostType()=="T"){
+                        if(post.getPostType().equals("Topic")){
                             postTypeSpinner.setSelection(0);
                         }
-                        if(post.getPostSubject()=="Algorithms"){
+                        if(post.getPostSubject().equals("Algorithms")){
+                            Log.d("TAG", "onResponse: hello");
                             subjectNameSpinner.setSelection(0);
                         }
-                        if(post.getPostSubject()=="Database"){
+                        if(post.getPostSubject().equals("Database")){
                             subjectNameSpinner.setSelection(1);
                         }
-                        if(post.getPostSubject()=="Java"){
+                        if(post.getPostSubject().equals("Java")){
                             subjectNameSpinner.setSelection(2);
                         }
-                        if(post.getPostSubject()=="Programming Languages"){
+                        if(post.getPostSubject().equals("Programming Languages")){
                             subjectNameSpinner.setSelection(3);
                         }
-                        if(post.getPostSubject()=="Software Engineering"){
+                        if(post.getPostSubject().equals("Software Engineering")){
+                            Log.d("TAG", "onResponse: hello1");
                             subjectNameSpinner.setSelection(4);
                         }
-                        if(post.getPostSubject()=="Web"){
+                        if(post.getPostSubject().equals("Web")){
                             subjectNameSpinner.setSelection(5);
                         }
                         postTags.setText(post.getPostTags());
@@ -208,32 +213,38 @@ public class EditPost extends AppCompatActivity {
         });
         queue.add(jsonArrayRequest);
     }
+
     private void editPost() throws JSONException {
-        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL3="http://192.168.1.111:8080/api/editPost" + postID;
-        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.PUT, JSON_URL3, null, new Response.Listener<JSONObject>() {
-            JSONObject postData = new JSONObject();
+
+        String post_url = "http://192.168.1.111:8080/api/edit/"+postID;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject postData = new JSONObject();
+
+        try {
+            postData.put("postType", postTypeSpinner.getSelectedItem().toString().trim());
+            postData.put("postSubject",subjectNameSpinner.getSelectedItem().toString().trim());
+            postData.put("postTitle", postTitle.getText().toString().trim());
+            postData.put("postTags", postTags.getText().toString().trim());
+            postData.put("postBody", postBody.getText().toString().trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, post_url, postData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    postData.put("postType", postTypeSpinner.getSelectedItem().toString().trim());
-                    postData.put("postSubject",subjectNameSpinner.getSelectedItem().toString().trim());
-                    postData.put("postTitle", postTitle.getText().toString().trim());
-                    postData.put("postTags", postTags.getText().toString().trim());
-                    postData.put("postBody", postBody.getText().toString().trim());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                Log.d("tag", response.toString());
             }
-
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+                error.printStackTrace();
+                Log.d("tag", "onErrorResponse:ERROR");
             }
         });
-        queue3.add(jsonObjReq2);
+
+        requestQueue.add(jsonObjectRequest);
+
     }
 
     private void populateSpinner(){

@@ -4,6 +4,7 @@ package project.bzu.csc.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +56,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import project.bzu.csc.Adapters.GetCommentsAdapter;
 import project.bzu.csc.Models.Comment;
+import project.bzu.csc.Models.Favorites;
 import project.bzu.csc.Models.Post;
 import project.bzu.csc.Models.User;
 import project.bzu.csc.R;
@@ -61,6 +64,7 @@ import project.bzu.csc.R;
 
 public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     List<Post> posts;
+    List<Favorites> favoritesList;
     public ArrayList<User> users;
     List<Comment> comments;
     List<Integer> IDs;
@@ -77,6 +81,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
     int postID,userID;
     SharedPreferences sp;
     CircleImageView image,accountImage;
+    boolean flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,7 +165,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                 return false;
             }
         });
-
+        favoritesList=new ArrayList<>();
         posts=new ArrayList<>();
         users = new ArrayList<>();
         comments=new ArrayList<>();
@@ -172,8 +177,18 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                 startActivity(new Intent(getApplicationContext(), Favorits.class));
             }
         });
+
         extractUser();
         extractPosts();
+        if(isFavorite()){
+            Log.d("TAG", "onCreate: yessssssssssss");
+            favorite.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_favorite_24));
+
+        }
+        else if(!isFavorite()){
+            Log.d("TAG", "onCreate: nooooooooo");
+            favorite.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_favorite_border_24));
+        }
         extractComments();
         PostClickView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,12 +212,16 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
             @Override
             public void onClick(View v) {
                 try {
-                    if(favorite.equals(R.drawable.ic_baseline_favorite_24)) {
+                    if(isFavorite()) {
+                        Log.d("TAG", "onClick: it is fav");
                         removeFromFavorites();
                         Toast.makeText(ViewPostInHome.this, "Removed from Favorites!", Toast.LENGTH_LONG).show();
-                    }else if(favorite.equals(R.drawable.ic_baseline_favorite_border_24)){
+                    }else if(!isFavorite()){
+                        Log.d("TAG", "onClick: it is not fav");
                         addToFavorites();
                         Toast.makeText(ViewPostInHome.this, "Added to Favorites!", Toast.LENGTH_LONG).show();
+                    }else{
+                        Log.d("TAG", "onClick: not working");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -213,6 +232,47 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
 
 
 //
+    }
+    private boolean isFavorite(){
+        Log.d("TAG", "isFavorite: im here");
+        RequestQueue queue= Volley.newRequestQueue(this);
+
+        String JSON_URL2="http://192.168.1.111:8080/api/isFavorite/"+userID+"/"+postID;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL2, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i=0; i< response.length();i++){
+                    Log.d("TAG", "onResponseeeee: "+response.length());
+                    Log.d("TAG", "onResponse2: "+ response.toString());
+                    try {
+                        JSONObject favoritesObject = response.getJSONObject(i);
+                        Favorites favorites = new Favorites();
+                        favorites.setPostID(favoritesObject.getInt("postID"));
+                        favorites.setUserID(favoritesObject.getInt("userID"));
+                        if(favorites.getPostID()==postID && favorites.getUserID()==userID){
+                            flag=true;
+                            Log.d("TAG", "onResponseasdasdasd: "+flag);
+                        }else{
+                            flag=false;
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAG", "onErrorResponse: no response");
+            }
+        });
+        Log.d("TAG", "isFavorite: im in");
+        queue.add(jsonArrayRequest);
+        return flag;
+
     }
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
@@ -251,7 +311,7 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
                             postType.setText("T");}
                         postTitle.setText(post.getPostTitle());
                         postContent.setText(post.getPostBody());
-                        postTime.setText(calculateTimeAgo(post.getPostTime()));
+                        postTime.setText((post.getPostTime()));
                         String tagsString=post.getPostTags();
                         String[] tagsArray=tagsString.split(",");
                         if(tagsArray.length==1){
@@ -400,21 +460,21 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         queue.add(jsonArrayRequest);
     }
 
-    private String calculateTimeAgo(String times) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-        try {
-            long time = sdf.parse(times).getTime();
-
-            long now = System.currentTimeMillis();
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
-
-            return ago+ "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    private String calculateTimeAgo(String times) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//
+//        try {
+//            long time = sdf.parse(times).getTime();
+//
+//            long now = System.currentTimeMillis();
+//            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//            return ago+ "";
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
     private void addComment()throws JSONException {
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -497,11 +557,13 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         String post_url = "http://192.168.1.111:8080/api/addTofavorites";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject postData = new JSONObject();
-
+        Favorites favorites=new Favorites();
 
         try {
             postData.put("userID", userID);
             postData.put("postID",postID);
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -520,13 +582,16 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         });
 
         requestQueue.add(jsonObjectRequest);
-        favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+        favorite.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_favorite_24));
+
 
     }
     private void removeFromFavorites(){
-        favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        favorite.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_favorite_border_24));
         RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL3="http://192.168.1.109:8080/api/deletePostID/" + postID;
+        Log.d("TAG", "removeFromFavorites: "+postID);
+        String JSON_URL3="http://192.168.1.111:8080/api/deletePost/" +userID+"/"+ postID;
+        Log.d("TAG", "removeFromFavorites: "+JSON_URL3);
         JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -607,12 +672,11 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
 
     private void deletePost() {
         RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
-        String JSON_URL3="http://192.168.1.111:8080/api/deletePostID/" + postID;
+        String JSON_URL3="http://192.168.1.111:8080/api/deletePost/" + postID;
         JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-
                 Log.d("deleteAPi","worked" + postID);
             }
 
@@ -625,8 +689,6 @@ public class ViewPostInHome extends AppCompatActivity implements PopupMenu.OnMen
         queue3.add(jsonObjReq2);
     }
 
-    private void editPost() {
-    }
 
 
 }

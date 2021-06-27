@@ -146,7 +146,7 @@ public class CreatePostFromHome extends AppCompatActivity {
         subjectNameSpinner= findViewById(R.id.subjectNameSpinner);
         JSONObject postData = new JSONObject();
         Date date =new Date();
-        SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        SimpleDateFormat simple= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String strdate =simple.format(date);
 
         try {

@@ -33,22 +33,22 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         this.context=context;
 
     }
-    private String calculateTimeAgo(String times) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-        try {
-            long time = sdf.parse(times).getTime();
-            Log.d("TAG", "calculateTime: "+time);
-            long now = System.currentTimeMillis();
-            Log.d("TAG", "calculateNow: "+now);
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
-
-            return ago+ "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    private String calculateTimeAgo(String times) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//
+//        try {
+//            long time = sdf.parse(times).getTime();
+//            Log.d("TAG", "calculateTime: "+time);
+//            long now = System.currentTimeMillis();
+//            Log.d("TAG", "calculateNow: "+now);
+//            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//            return ago+ "";
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
 
     @NonNull
     @Override
@@ -113,7 +113,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
         }
 
-        holder.postTime.setText(calculateTimeAgo(posts.get(position).getPostTime()));
+        holder.postTime.setText((posts.get(position).getPostTime()));
         //holder.postTime.setText("hello");
 
 

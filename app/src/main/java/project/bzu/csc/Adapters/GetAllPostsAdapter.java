@@ -47,22 +47,22 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
 
 
     }
-    private String calculateTimeAgo(String times) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-        try {
-            long time = sdf.parse(times).getTime();
-            Log.d("TAG", "calculateTime: "+time);
-            long now = System.currentTimeMillis();
-            Log.d("TAG", "calculateNow: "+now);
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
-
-            return ago+ "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    private String calculateTimeAgo(String times) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//
+//        try {
+//            long time = sdf.parse(times).getTime();
+//            Log.d("TAG", "calculateTime: "+time);
+//            long now = System.currentTimeMillis();
+//            Log.d("TAG", "calculateNow: "+now);
+//            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//            return ago+ "";
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -192,7 +192,7 @@ public class GetAllPostsAdapter extends RecyclerView.Adapter<GetAllPostsAdapter.
             Picasso.get().load("https://cdn.icon-icons.com/icons2/792/PNG/512/YOUTUBE_icon-icons.com_65537.png").into(holder.image2);
             holder.imagesPreviews.setVisibility(View.VISIBLE);
             holder.image2.setVisibility(View.VISIBLE);}
-        holder.postTime.setText(calculateTimeAgo(posts.get(position).getPostTime()));
+        holder.postTime.setText((posts.get(position).getPostTime()));
         Picasso.get().load(posts.get(position).getUserImage()).into(holder.image);
         holder.cardView.setOnClickListener(new View.OnClickListener(){
             @Override

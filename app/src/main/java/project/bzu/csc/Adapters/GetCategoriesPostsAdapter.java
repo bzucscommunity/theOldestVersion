@@ -44,22 +44,22 @@ public class GetCategoriesPostsAdapter extends RecyclerView.Adapter<GetCategorie
 
 
     }
-    private String calculateTimeAgo(String times) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-        try {
-            long time = sdf.parse(times).getTime();
-            Log.d("TAG", "calculateTime: "+time);
-            long now = System.currentTimeMillis();
-            Log.d("TAG", "calculateNow: "+now);
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
-
-            return ago+ "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    private String calculateTimeAgo(String times) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//
+//        try {
+//            long time = sdf.parse(times).getTime();
+//            Log.d("TAG", "calculateTime: "+time);
+//            long now = System.currentTimeMillis();
+//            Log.d("TAG", "calculateNow: "+now);
+//            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//            return ago+ "";
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
     @NonNull
     @Override
     public GetCategoriesPostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -201,7 +201,7 @@ public class GetCategoriesPostsAdapter extends RecyclerView.Adapter<GetCategorie
             holder.tag2.setVisibility(View.VISIBLE);
             holder.tags.setVisibility(View.VISIBLE);
         }*/
-        holder.postTime.setText(calculateTimeAgo(posts.get(position).getPostTime()));
+        holder.postTime.setText((posts.get(position).getPostTime()));
         //holder.postTime.setText("hello");
 
 

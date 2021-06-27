@@ -134,7 +134,7 @@ public class SearchCardView extends AppCompatActivity {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(SearchCardView.this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month, day);
+                DatePickerDialog dialog = new DatePickerDialog(SearchCardView.this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month,day );
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setTitle("Select a Date to filter By");
                 dialog.show();
@@ -145,7 +145,16 @@ public class SearchCardView extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                filterTime = day + "-" + month + "-" + year;
+                if(month<10 && day >10){
+                filterTime = year + "-0" + month + "-" + day ;
+                }else if(day<10 && month>10){
+                    filterTime = year + "-" + month + "-0" + day ;
+                }else if(month<10 && day<10){
+                    filterTime = year + "-0" + month + "-0" + day ;
+                }else {
+                    filterTime = year + "-" + month + "-" + day ;
+                }
+                Log.d("TAG", "onDateSet: "+filterTime);
                 filter();
             }
         };
@@ -160,7 +169,7 @@ public class SearchCardView extends AppCompatActivity {
     }
     private void extractPosts() {
         RequestQueue queue= Volley.newRequestQueue(this);
-        String JSON_URL="http://192.168.1.111:8080/api/subject/"+name;
+        String JSON_URL="http://192.168.1.111:8080/api/subjectPosts/"+name;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
 
             @Override

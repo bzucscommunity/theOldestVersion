@@ -106,18 +106,7 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
             }
         });
 
-        favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                try {
-                    addToFavorites();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Toast.makeText(ViewSearchPost.this, "Added to Favorites", Toast.LENGTH_LONG).show();
-            }
-        });
 
         image1=findViewById(R.id.image_preview1);
         image2=findViewById(R.id.image_preview2);
@@ -195,6 +184,23 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
                 Toast.makeText(ViewSearchPost.this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(favorite.equals(R.drawable.ic_baseline_favorite_24)) {
+                        removeFromFavorites();
+                        Toast.makeText(ViewSearchPost.this, "Removed from Favorites!", Toast.LENGTH_LONG).show();
+                    }else if(favorite.equals(R.drawable.ic_baseline_favorite_border_24)){
+                        addToFavorites();
+                        Log.d("TAG", "onClick: hithere");
+                        Toast.makeText(ViewSearchPost.this, "Added to Favorites!", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 //
@@ -235,7 +241,7 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
                             postType.setText("T");}
                         postTitle.setText(post.getPostTitle());
                         postContent.setText(post.getPostBody());
-                        postTime.setText(calculateTimeAgo(post.getPostTime()));
+                        postTime.setText((post.getPostTime()));
                         String tagsString=post.getPostTags();
                         String[] tagsArray=tagsString.split(",");
                         if(tagsArray.length==1){
@@ -360,21 +366,21 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
         });
         queue.add(jsonArrayRequest);
     }
-    private String calculateTimeAgo(String times) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-        try {
-            long time = sdf.parse(times).getTime();
-
-            long now = System.currentTimeMillis();
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
-
-            return ago+ "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    private String calculateTimeAgo(String times) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//
+//        try {
+//            long time = sdf.parse(times).getTime();
+//
+//            long now = System.currentTimeMillis();
+//            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//            return ago+ "";
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
     private void addComment()throws JSONException {
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -504,17 +510,12 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
         JSONObject postData = new JSONObject();
 
 
-
         try {
             postData.put("userID", userID);
             postData.put("postID",postID);
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
             @Override
@@ -530,17 +531,44 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
         });
 
         requestQueue.add(jsonObjectRequest);
-        ((ImageButton) favorite).setImageResource(R.drawable.ic_baseline_favorite_24);
+        favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+
+    }
+    private void removeFromFavorites(){
+        favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL3="http://192.168.1.109:8080/api/deletePostID/" + postID;
+        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("deleteAPi","worked" + postID);
+            }
+
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue3.add(jsonObjReq2);
 
     }
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_post:
-                editPost();
+                Intent intent=new Intent(this,EditPost.class);
+                intent.putExtra("postID",postID);
+                startActivity(intent);
                 return true;
             case R.id.delete_post:
                 deletePost();
+                Toast.makeText(ViewSearchPost.this, "Post Deleted!", Toast.LENGTH_SHORT).show();
+                intent=new Intent(this,Home.class);
+                startActivity(intent);
                 return true;
             default:
                 return false;
@@ -548,10 +576,22 @@ public class ViewSearchPost extends AppCompatActivity implements PopupMenu.OnMen
     }
 
     private void deletePost() {
-    }
+        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL3="http://192.168.1.111:8080/api/deletePost/" + postID;
+        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
 
-    private void editPost() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("deleteAPi","worked" + postID);
+            }
 
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue3.add(jsonObjReq2);
     }
 
 }

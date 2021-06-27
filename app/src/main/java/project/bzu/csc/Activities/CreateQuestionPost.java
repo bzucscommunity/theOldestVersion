@@ -157,7 +157,7 @@ public class CreateQuestionPost extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject postData = new JSONObject();
         Date date =new Date();
-        SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        SimpleDateFormat simple= new SimpleDateFormat("yyyy-MM-dddd hh:mm:ss");
         final String strdate =simple.format(date);
 
 

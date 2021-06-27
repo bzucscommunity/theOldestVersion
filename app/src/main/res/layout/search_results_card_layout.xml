@@ -38,11 +38,15 @@
 
             <TextView
                 android:id="@+id/post_Title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
                 android:text=" Post Title"
                 android:textColor="#000000"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/postType"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,7 +58,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Time Posted"
                 app:layout_constraintEnd_toEndOf="@+id/postType"
-                app:layout_constraintTop_toBottomOf="@+id/postType" />
+                app:layout_constraintTop_toBottomOf="@+id/post_Title" />
 
 
             <TextView

@@ -170,8 +170,19 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
             @Override
             public void onClick(View v) {
 
-                remove();
-                Toast.makeText(ViewFavoritePost.this, "Removed from Favorites", Toast.LENGTH_LONG).show();
+                try {
+                    if(isFavored.equals(R.drawable.ic_baseline_favorite_24)) {
+                        removeFromFavorites();
+                        Toast.makeText(ViewFavoritePost.this, "Removed from Favorites!", Toast.LENGTH_LONG).show();
+                    }else if(isFavored.equals(R.drawable.ic_baseline_favorite_border_24)){
+                        addToFavorites();
+                        Log.d("TAG", "onClick: hithere");
+                        Toast.makeText(ViewFavoritePost.this, "Added to Favorites!", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         isFavored.setImageResource(R.drawable.ic_baseline_favorite_24);
@@ -235,7 +246,7 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
                             postType.setText("T");}
                         postTitle.setText(post.getPostTitle());
                         postContent.setText(post.getPostBody());
-                        postTime.setText(calculateTimeAgo(post.getPostTime()));
+                        postTime.setText((post.getPostTime()));
                         String tagsString=post.getPostTags();
                         String[] tagsArray=tagsString.split(",");
                         if(tagsArray.length==1){
@@ -358,21 +369,21 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
         });
         queue.add(jsonArrayRequest);
     }
-    private String calculateTimeAgo(String times) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-        try {
-            long time = sdf.parse(times).getTime();
-
-            long now = System.currentTimeMillis();
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
-
-            return ago+ "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    private String calculateTimeAgo(String times) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//
+//        try {
+//            long time = sdf.parse(times).getTime();
+//
+//            long now = System.currentTimeMillis();
+//            CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//            return ago+ "";
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
     private void addComment()throws JSONException {
         Date date =new Date();
         SimpleDateFormat simple= new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -500,10 +511,15 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_post:
-                editPost();
+                Intent intent=new Intent(this,EditPost.class);
+                intent.putExtra("postID",postID);
+                startActivity(intent);
                 return true;
             case R.id.delete_post:
                 deletePost();
+                Toast.makeText(ViewFavoritePost.this, "Post Deleted!", Toast.LENGTH_SHORT).show();
+                intent=new Intent(this,Home.class);
+                startActivity(intent);
                 return true;
             default:
                 return false;
@@ -511,16 +527,56 @@ public class ViewFavoritePost extends AppCompatActivity implements PopupMenu.OnM
     }
 
     private void deletePost() {
+        RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
+        String JSON_URL3="http://192.168.1.111:8080/api/deletePost/" + postID;
+        JsonObjectRequest jsonObjReq2 = new JsonObjectRequest(Request.Method.DELETE, JSON_URL3, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("deleteAPi","worked" + postID);
+            }
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag22", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        queue3.add(jsonObjReq2);
     }
 
-    private void editPost() {
+    private void addToFavorites() throws JSONException {
+
+        String post_url = "http://192.168.1.111:8080/api/addTofavorites";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject postData = new JSONObject();
+
+
+        try {
+            postData.put("userID", userID);
+            postData.put("postID",postID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, post_url, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("tag", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d("tag", "onErrorResponse:ERROR");
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+        isFavored.setImageResource(R.drawable.ic_baseline_favorite_24);
 
     }
-
-
-
-
-    private void remove(){
+    private void removeFromFavorites(){
         isFavored.setImageResource(R.drawable.ic_baseline_favorite_border_24);
         RequestQueue queue3= Volley.newRequestQueue(getApplicationContext());
         String JSON_URL3="http://192.168.1.109:8080/api/deletePostID/" + postID;
